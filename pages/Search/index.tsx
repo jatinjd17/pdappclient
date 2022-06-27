@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   View,
@@ -9,17 +9,96 @@ import {
   Linking,
   TouchableWithoutFeedback,
   Keyboard,
+  Button,
 } from "react-native";
 import { getSearchdataaction } from "../../actions/search";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { isAuth } from "../../actions/login";
+import { trackallproductsuser, Trackproduct } from "../../actions/trackproduct";
 
-function Search() {
+function Search({ navigation }) {
   const [query, setquery] = useState("");
   const [searchdata, setsearchdata] = useState([]);
+  const [pro, setpro] = useState([]);
+  const [username, setusername] = useState("");
+  let many = [];
 
   const clearInput = () => {
     setquery("");
     setsearchdata([]);
+  };
+
+  useEffect(() => {
+    isAuth().then((data) => {
+      if (data) {
+        setusername(data.username);
+        blogs(data.username);
+      }
+    });
+  }, []);
+
+  const blogs = async (username) => {
+    const all: any = await allBlogs(username);
+    if (all) {
+      all.forEach((prod) => {
+        many.push(prod.product);
+      });
+      setpro(many);
+    }
+  };
+
+  const allBlogs = (username) => {
+    return trackallproductsuser(username).then((data) => {
+      if (!data) {
+        return false;
+      } else {
+        console.log(data);
+        return data.trackedproducts;
+      }
+    });
+  };
+
+  const trackpro = async (item) => {
+    if (username) {
+      const yeye = {
+        username1: username,
+        productname1: {
+          product: item.producttitle,
+          price: item.finalprice,
+          highestprice: item.highestprice,
+          lowestprice: item.lowestprice,
+          percent: item.percent,
+          platform: item.platform,
+          discountprice: item.discountprice,
+          category: item.category,
+          imageurl: item.imageurl,
+          producturl: item.producturl,
+          mailsent: false,
+        },
+      };
+
+      console.log(yeye);
+
+      Trackproduct(yeye).then((data) => {
+        if (data.error) {
+          console.log(data.error);
+          return;
+        }
+        if (data.success) {
+          console.log(data);
+          // setpro(item.producttitle);
+          setpro([...pro, item.producttitle]);
+
+          // settrakpro(card.producttitle);
+        }
+      });
+
+      console.log("issss auttthhhh");
+    }
+    if (!username) {
+      console.log("Nottttt auttthhhh");
+      navigation.navigate("signin");
+    }
   };
 
   const item = ({ item }: any) => {
@@ -150,6 +229,27 @@ function Search() {
           <Text style={{ fontSize: 14, fontWeight: "900", marginTop: 8 }}>
             {item.producttitle}
           </Text>
+          <View>
+            {pro && (
+              <Button
+                color={"#e32f45"}
+                disabled={
+                  pro.includes(item.producttitle) === true ? true : false
+                }
+                title={
+                  pro.includes(item.producttitle) === true
+                    ? `Tracking`
+                    : `Add to Watchlist`
+                }
+                onPress={() => {
+                  trackpro(item);
+                  // setpro;
+                  // settrakpro(card.producttitle);
+                  // console.log(trakpro);
+                }}
+              />
+            )}
+          </View>
         </TouchableOpacity>
       </View>
     );

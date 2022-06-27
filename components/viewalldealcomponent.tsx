@@ -7,10 +7,13 @@ import {
   View,
   Image,
   ActivityIndicator,
+  Button,
 } from "react-native";
 import { viewalldealcataction } from "../actions/viewall";
 import Mobilecard from "./mobilecard";
 import Categorydropdown from "./categorydropdown";
+import { isAuth } from "../actions/login";
+import { trackallproductsuser, Trackproduct } from "../actions/trackproduct";
 
 function ViewallDealcomponent({
   dealtime,
@@ -20,8 +23,17 @@ function ViewallDealcomponent({
   originalviewalldealtime,
 }) {
   const [mobiles, setMobiles]: any = useState([]);
+  const [pro, setpro] = useState([]);
+  const [username, setusername] = useState("");
+  let many = [];
 
   useEffect(() => {
+    isAuth().then((data) => {
+      if (data) {
+        setusername(data.username);
+        blogs(data.username);
+      }
+    });
     Mob();
   }, []);
 
@@ -54,6 +66,70 @@ function ViewallDealcomponent({
       });
     } else {
       return null;
+    }
+  };
+
+  const blogs = async (username) => {
+    const all: any = await allBlogs(username);
+    if (all) {
+      all.forEach((prod) => {
+        many.push(prod.product);
+      });
+      setpro(many);
+    }
+  };
+
+  const allBlogs = (username) => {
+    return trackallproductsuser(username).then((data) => {
+      if (!data) {
+        return false;
+      } else {
+        console.log(data);
+        return data.trackedproducts;
+      }
+    });
+  };
+
+  const trackpro = async (item) => {
+    if (username) {
+      const yeye = {
+        username1: username,
+        productname1: {
+          product: item.producttitle,
+          price: item.finalprice,
+          highestprice: item.highestprice,
+          lowestprice: item.lowestprice,
+          percent: item.percent,
+          platform: item.platform,
+          discountprice: item.discountprice,
+          category: item.category,
+          imageurl: item.imageurl,
+          producturl: item.producturl,
+          mailsent: false,
+        },
+      };
+
+      console.log(yeye);
+
+      Trackproduct(yeye).then((data) => {
+        if (data.error) {
+          console.log(data.error);
+          return;
+        }
+        if (data.success) {
+          console.log(data);
+          // setpro(item.producttitle);
+          setpro([...pro, item.producttitle]);
+
+          // settrakpro(card.producttitle);
+        }
+      });
+
+      console.log("issss auttthhhh");
+    }
+    if (!username) {
+      console.log("Nottttt auttthhhh");
+      navigation.navigate("signin");
     }
   };
 
@@ -107,7 +183,7 @@ function ViewallDealcomponent({
                   marginRight: 6,
                   width: 150,
                   height: 120,
-                  borderRadius: 15,
+                  // borderRadius: 15,
                   resizeMode: "contain",
                 }}
                 source={{
@@ -193,13 +269,34 @@ function ViewallDealcomponent({
           <Text style={{ fontSize: 14, fontWeight: "900", marginTop: 8 }}>
             {item.producttitle}
           </Text>
+          <View>
+            {pro && (
+              <Button
+                color={"#e32f45"}
+                disabled={
+                  pro.includes(item.producttitle) === true ? true : false
+                }
+                title={
+                  pro.includes(item.producttitle) === true
+                    ? `Tracking`
+                    : `Add to Watchlist`
+                }
+                onPress={() => {
+                  trackpro(item);
+                  // setpro;
+                  // settrakpro(card.producttitle);
+                  // console.log(trakpro);
+                }}
+              />
+            )}
+          </View>
         </TouchableOpacity>
       </View>
     );
   };
 
   return (
-    <View>
+    <View style={{ marginBottom: 190 }}>
       <Categorydropdown
         category={category}
         navigation={navigation}

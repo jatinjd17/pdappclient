@@ -55,6 +55,7 @@ const Tabs = () => {
         name="viewall123"
         component={HomeStackNavigator}
         options={{
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => (
             <View
               style={{
@@ -86,6 +87,7 @@ const Tabs = () => {
         name="Flipkart"
         component={FlipkartStackNavigator}
         options={{
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => (
             <View
               style={{
@@ -117,6 +119,7 @@ const Tabs = () => {
         name="Sear"
         component={SearchStackNavigator}
         options={{
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => (
             <Image
               source={require("../assets/icons/search.png")}
@@ -136,6 +139,7 @@ const Tabs = () => {
         name="Amazon"
         component={AmazonStackNavigator}
         options={{
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => (
             <View
               style={{
@@ -167,6 +171,7 @@ const Tabs = () => {
         name="Settings"
         component={SettingsStackNavigator}
         options={{
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => (
             <View
               style={{

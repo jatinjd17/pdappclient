@@ -1,6 +1,8 @@
+import { ServerURL } from "../url/url";
+
 export const gettodaysDeals = (dealstime) => {
   console.log(dealstime);
-  return fetch(`https://pdappserver.herokuapp.com/api/${dealstime}`, {
+  return fetch(`${ServerURL}/api/${dealstime}`, {
     // http://192.168.29.231:8000/api/${dealstime}
     method: "GET",
     headers: {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   RefreshControl,
   View,
@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { isAuth } from "../../actions/login";
 import Categoryamazfkdropdown from "../../components/categoryamazfkdropdown";
 import Mobilecomponent from "../../components/mobilecomponent";
 
@@ -15,14 +16,31 @@ const wait = (timeout) => {
 };
 
 function AmazonHome({ navigation }) {
+  useEffect(() => {
+    // aut();
+  }, []);
+
   const [refreshing, setRefreshing] = React.useState(false);
+  const [username, setusername] = useState("");
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(500).then(() => setRefreshing(false));
   }, []);
 
-  const CategoryBlock = ({ categoryTitle, Platform, CategoryName }) => (
+  // const aut = async () => {
+  //   const isaut = await isAuth();
+  //   if (isaut) {
+  //     setusername(isaut.username);
+  //   }
+  // };
+
+  const CategoryBlock = ({
+    categoryTitle,
+    Platform,
+    CategoryName,
+    // username,
+  }) => (
     <View>
       <View
         style={{
@@ -71,7 +89,12 @@ function AmazonHome({ navigation }) {
           showsHorizontalScrollIndicator={false}
         >
           <Text>
-            <Mobilecomponent platform={Platform} category={CategoryName} />
+            <Mobilecomponent
+              platform={Platform}
+              category={CategoryName}
+              navigation={navigation}
+              // username={username}
+            />
           </Text>
         </ScrollView>
       )}
@@ -91,26 +114,30 @@ function AmazonHome({ navigation }) {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <View style={{ marginBottom: 100 }}>
+        <View style={{ marginBottom: 150 }}>
           <CategoryBlock
             categoryTitle={"Mobiles"}
             Platform={"amazon"}
             CategoryName={"mobiles"}
+            // username={username}
           />
           <CategoryBlock
             categoryTitle={"Tablets"}
             Platform={"amazon"}
             CategoryName={"tablets"}
+            // username={username}
           />
           <CategoryBlock
             categoryTitle={"Televisions"}
             Platform={"amazon"}
             CategoryName={"televisions"}
+            // username={username}
           />
           <CategoryBlock
             categoryTitle={"Cameras"}
             Platform={"amazon"}
             CategoryName={"cameras"}
+            // username={username}
           />
         </View>
       </ScrollView>

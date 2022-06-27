@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   RefreshControl,
   View,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
+import { isAuth } from "../../actions/login";
 import Categoryamazfkdropdown from "../../components/categoryamazfkdropdown";
 import Mobilecomponent from "../../components/mobilecomponent";
 
@@ -15,14 +16,45 @@ const wait = (timeout) => {
 };
 
 function FlipkartHome({ navigation }) {
+  // useEffect(() => {
+  //   // aut();
+  // }, []);
+
   const [refreshing, setRefreshing] = React.useState(false);
+  const [username, setusername] = useState("");
+  // const [trigger, settrigger] = useState(true);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(500).then(() => setRefreshing(false));
   }, []);
 
-  const CategoryBlock = ({ categoryTitle, Platform, CategoryName }) => (
+  // const aut = async () => {
+  //   const isaut = await isAuth();
+  //   if (isaut) {
+  //     setusername(isaut.username);
+  //   }
+  // };
+
+  // const aut = async () => {
+  //   if (trigger) {
+  //     const isaut = await isAuth();
+  //     if (isaut) {
+  //       setusername(isaut.username);
+  //       settrigger(false);
+  //     }
+  //   }
+  // };
+  useEffect(() => {
+    // aut();
+  }, []);
+
+  const CategoryBlock = ({
+    categoryTitle,
+    Platform,
+    CategoryName,
+    // username,
+  }) => (
     <View>
       <View
         style={{
@@ -75,7 +107,12 @@ function FlipkartHome({ navigation }) {
           showsHorizontalScrollIndicator={false}
         >
           <Text>
-            <Mobilecomponent platform={Platform} category={CategoryName} />
+            <Mobilecomponent
+              platform={Platform}
+              category={CategoryName}
+              navigation={navigation}
+              // username={username}
+            />
           </Text>
         </ScrollView>
       )}
@@ -95,26 +132,30 @@ function FlipkartHome({ navigation }) {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <View style={{ marginBottom: 100 }}>
+        <View style={{ marginBottom: 150 }}>
           <CategoryBlock
             categoryTitle={"Mobiles"}
             Platform={"flipkart"}
             CategoryName={"mobiles"}
+            // username={username}
           />
           <CategoryBlock
             categoryTitle={"Tablets"}
             Platform={"flipkart"}
             CategoryName={"tablets"}
+            // username={username}
           />
           <CategoryBlock
             categoryTitle={"Televisions"}
             Platform={"flipkart"}
             CategoryName={"televisions"}
+            // username={username}
           />
           <CategoryBlock
             categoryTitle={"Cameras"}
             Platform={"flipkart"}
             CategoryName={"cameras"}
+            // username={username}
           />
         </View>
       </ScrollView>

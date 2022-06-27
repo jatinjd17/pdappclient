@@ -1,6 +1,8 @@
+import { ServerURL } from "../url/url";
+
 export const viewalltodaysdealaction = ({ dealtime }) => {
   console.log();
-  return fetch(`https://pdappserver.herokuapp.com/api/${dealtime}`, {
+  return fetch(`${ServerURL}/api/${dealtime}`, {
     method: "GET",
     headers: {
       Accept: "applicaion/json",
@@ -15,7 +17,7 @@ export const viewalltodaysdealaction = ({ dealtime }) => {
 export const viewallweeklydealaction = ({ platform, category }) => {
   console.log();
   return fetch(
-    `https://pdappserver.herokuapp.com/api/allproductsviewall?platform=${platform}&category=${category}`,
+    `${ServerURL}/api/allproductsviewall?platform=${platform}&category=${category}`,
     {
       method: "GET",
       headers: {
@@ -31,15 +33,12 @@ export const viewallweeklydealaction = ({ platform, category }) => {
 
 export const viewalldealcataction = ({ dealtime, category }) => {
   console.log();
-  return fetch(
-    `https://pdappserver.herokuapp.com/api/${dealtime}?category=${category}`,
-    {
-      method: "GET",
-      headers: {
-        Accept: "applicaion/json",
-      },
-    }
-  )
+  return fetch(`${ServerURL}/api/${dealtime}?category=${category}`, {
+    method: "GET",
+    headers: {
+      Accept: "applicaion/json",
+    },
+  })
     .then((data) => {
       return data.json();
     })

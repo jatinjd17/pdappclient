@@ -1,6 +1,8 @@
+import { ServerURL } from "../url/url";
+
 export const getallmobiles = ({ platform, category }) => {
   return fetch(
-    `https://pdappserver.herokuapp.com/api/allproducts?platform=${platform}&category=${category}`,
+    `${ServerURL}/api/allproducts?platform=${platform}&category=${category}`,
     {
       method: "GET",
       headers: {

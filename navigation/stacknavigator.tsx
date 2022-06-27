@@ -9,6 +9,11 @@ import AmazonHome from "../pages/AmazonHome";
 import ViewAllAmazFk from "../pages/viewallamazfkpage";
 import Search from "../pages/Search";
 import Settings from "../pages/Settingshome";
+import Signin from "../pages/signin";
+import Signup from "../pages/signup";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { removeStorage } from "../actions/login";
 
 const Stack = createStackNavigator();
 
@@ -46,6 +51,9 @@ const HomeStackNavigator = () => {
     >
       <Stack.Screen name="home" component={Home} />
       <Stack.Screen name="viewall" component={ViewAll} />
+      <Stack.Screen name="signin" component={Signin} />
+      <Stack.Screen name="signup" component={Signup} />
+      <Stack.Screen name="settings" component={Settings} />
     </Stack.Navigator>
   );
 };
@@ -84,6 +92,25 @@ const FlipkartStackNavigator = () => {
     >
       <Stack.Screen name="fk" component={FlipkartHome} />
       <Stack.Screen name="viewall" component={ViewAllAmazFk} />
+      <Stack.Screen
+        options={{
+          headerStyle: {
+            backgroundColor: "#e32f45",
+          },
+        }}
+        name="signin"
+        component={Signin}
+      />
+      <Stack.Screen
+        options={{
+          headerStyle: {
+            backgroundColor: "#e32f45",
+          },
+        }}
+        name="signup"
+        component={Signup}
+      />
+      <Stack.Screen name="settings" component={Settings} />
     </Stack.Navigator>
   );
 };
@@ -114,6 +141,25 @@ const AmazonStackNavigator = () => {
     >
       <Stack.Screen name="amaz" component={AmazonHome} />
       <Stack.Screen name="viewall" component={ViewAllAmazFk} />
+      <Stack.Screen
+        options={{
+          headerStyle: {
+            backgroundColor: "#e32f45",
+          },
+        }}
+        name="signin"
+        component={Signin}
+      />
+      <Stack.Screen
+        options={{
+          headerStyle: {
+            backgroundColor: "#e32f45",
+          },
+        }}
+        name="signup"
+        component={Signup}
+      />
+      <Stack.Screen name="settings" component={Settings} />
     </Stack.Navigator>
   );
 };
@@ -155,11 +201,30 @@ const SearchStackNavigator = () => {
       }}
     >
       <Stack.Screen name="amaz" component={Search} />
+      <Stack.Screen
+        options={{
+          headerStyle: {
+            backgroundColor: "#e32f45",
+          },
+        }}
+        name="signin"
+        component={Signin}
+      />
+      <Stack.Screen
+        options={{
+          headerStyle: {
+            backgroundColor: "#e32f45",
+          },
+        }}
+        name="signup"
+        component={Signup}
+      />
+      <Stack.Screen name="settings" component={Settings} />
     </Stack.Navigator>
   );
 };
 
-const SettingsStackNavigator = () => {
+const SettingsStackNavigator = ({ navigation }) => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -194,10 +259,63 @@ const SettingsStackNavigator = () => {
             </View>
           </View>
         ),
+        headerRight: () => (
+          <TouchableOpacity
+            onPress={() => {
+              removeStorage("token", "user", "username");
+              navigation.reset({
+                index: 0,
+                routes: [
+                  {
+                    name: "signin",
+                  },
+                ],
+              });
+            }}
+          >
+            <View style={{ marginRight: 5, alignItems: "center" }}>
+              <Icon name="logout" size={20} color="white" />
+              <Text style={{ marginRight: 7, color: "white" }}>Logout</Text>
+            </View>
+          </TouchableOpacity>
+        ),
         headerTitleStyle: { flex: 1, textAlign: "center" },
       }}
     >
       <Stack.Screen name="settings" component={Settings} />
+      <Stack.Screen
+        options={{
+          headerTitle: () => (
+            <View>
+              <Text
+                style={{ color: "white", fontWeight: "bold", fontSize: 20 }}
+              >
+                Signin
+              </Text>
+            </View>
+          ),
+          headerRight: () => <View></View>,
+        }}
+        name="signin"
+        component={Signin}
+      />
+      <Stack.Screen
+        options={{
+          headerTitle: () => (
+            <View>
+              <Text
+                style={{ color: "white", fontWeight: "bold", fontSize: 20 }}
+              >
+                SignUp
+              </Text>
+            </View>
+          ),
+          headerRight: () => <View></View>,
+        }}
+        name="signup"
+        component={Signup}
+      />
+      <Stack.Screen name="home" component={Home} />
     </Stack.Navigator>
   );
 };

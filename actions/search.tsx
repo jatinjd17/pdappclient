@@ -1,5 +1,7 @@
+import { ServerURL } from "../url/url";
+
 export const getSearchdataaction = (params: any) => {
-  return fetch(`https://pdappserver.herokuapp.com/api/search?id=${params}`, {
+  return fetch(`${ServerURL}/api/search?id=${params}`, {
     method: "GET",
     headers: {
       Accept: "applicaion/json",

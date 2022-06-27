@@ -4,7 +4,7 @@
     "slug": "PriceDrop",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icons/pdappicon2.png",
+    "icon": "./assets/icons/pdappicon3.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/icons/pdappsplashscreen.png",
@@ -22,12 +22,12 @@
       "package": "com.pricedrop.pricedrop",
       "versionCode": 1,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icons/pdappicon2.png",
+        "foregroundImage": "./assets/icons/pdappicon3.png",
         "backgroundColor": "#e32f45"
       }
     },
     "web": {
-      "favicon": "./assets/icons/pdappicon2.png"
+      "favicon": "./assets/icons/pdappicon3.png"
     }
   }
 }

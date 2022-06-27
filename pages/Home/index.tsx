@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   RefreshControl,
@@ -7,19 +7,89 @@ import {
   View,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { isAuth } from "../../actions/login";
+import { trackallproductsuser } from "../../actions/trackproduct";
 import Homepagecomponents from "../../components/homepagecomponents";
+import fs from "fs";
+import datajson from "../../jatajson.json";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 
 function Home({ navigation }) {
+  // useEffect(() => {
+  //   isAuth().then((data) => {
+  //     if (data) {
+  //       setusername(data.username);
+  //     }
+  //   });
+  // });
+
+  const [username, setusername] = useState("");
+  const [trigger, settrigger] = useState(true);
+  const [userallproducts, setuserallproducts] = useState([]);
+  var jdsss = [];
+
+  // useEffect(() => {
+  //   isAuth().then((data) => {
+  //     if (data) {
+  //       setusername(data.username);
+  //       // trackallproductsuser(data.username).then((data) => {
+  //       //   // console.log(data.trackedproducts);
+  //       //   // settrigger(false);
+  //       //   // data.trackedproducts.forEach((element) => {
+  //       //   //   console.log(element.product);
+  //       //   // });
+  //       //   // data.trackedproducts.map((p, i) => {
+  //       //   //   // setuserallproducts(p.product);
+  //       //   //   // jdsss.push(p.product);
+  //       //   // });
+  //       //   // setuserallproducts(data.trackedproducts);
+  //       // });
+  //     }
+  //   });
+  // }, []);
+
+  // if (trigger) {
+  //   if (username) {
+  //     trackallproductsuser(username).then((data) => {
+  //       console.log(data.trackedproducts);
+  //       settrigger(false);
+  //       data.trackedproducts.forEach((element) => {
+  //         console.log(element.product);
+  //       });
+  //       // data.trackedproducts.map((p, i) => {
+  //       //   setuserallproducts(p.product);
+  //       // });
+  //       // setuserallproducts(data.trackedproducts);
+  //     });
+  //   }
+  // }
+
   const [refreshing, setRefreshing] = React.useState(false);
+  // const [trigger, settrigger] = useState(true);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(500).then(() => setRefreshing(false));
   }, []);
+
+  // const aut = async () => {
+  //   if (trigger) {
+  //     console.log(
+  //       "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr"
+  //     );
+  //     settrigger(false);
+  //     const isaut = await isAuth();
+  //     if (isaut) {
+  //       setusername(isaut.username);
+  //     }
+  //   }
+  // };
+
+  // aut();
+
   const DealsRowComponentBlock = ({
     DealTitle,
     dealtimeeee,
@@ -77,7 +147,10 @@ function Home({ navigation }) {
           showsHorizontalScrollIndicator={false}
         >
           <Text>
-            <Homepagecomponents dealtime={dealtimeeee} />
+            <Homepagecomponents
+              dealtime={dealtimeeee}
+              navigation={navigation}
+            />
           </Text>
         </ScrollView>
       )}
@@ -112,6 +185,7 @@ function Home({ navigation }) {
             category={""}
             dealtimecat={"monthlydealcat"}
           />
+          <View>{jdsss ? <Text>{jdsss}</Text> : " "}</View>
         </View>
       </ScrollView>
     </View>

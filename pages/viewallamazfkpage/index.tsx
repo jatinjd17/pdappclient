@@ -13,7 +13,11 @@ function ViewAllAmazFk({ route, navigation }) {
         category={category}
         home={false}
       />
-      <Viewallamazfkcomponent platform={platform} category={category} />
+      <Viewallamazfkcomponent
+        platform={platform}
+        category={category}
+        navigation={navigation}
+      />
     </View>
   );
 }
