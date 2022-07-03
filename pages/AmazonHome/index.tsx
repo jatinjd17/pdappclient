@@ -101,7 +101,7 @@ function AmazonHome({ navigation }) {
     </View>
   );
   return (
-    <View>
+    <View style={{ backgroundColor: "#F3F9FD" }}>
       <Categoryamazfkdropdown
         navigation={navigation}
         platform={"amazon"}

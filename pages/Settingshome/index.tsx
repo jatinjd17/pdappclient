@@ -139,7 +139,10 @@ function Settings({ navigation }) {
       }
       style={{ marginBottom: 98 }}
     >
-      {username ? getAllBlogsHome(trackedproducts) : <Text>Loading...</Text>}
+      {
+        username ? getAllBlogsHome(trackedproducts) : null
+        // <Text>Loading...</Text>
+      }
       {/* {username ? newwwwww(username) : <Text>Loading...</Text>} */}
       {trackedproducts.length == 0 ? (
         <View>

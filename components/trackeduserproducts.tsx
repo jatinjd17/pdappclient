@@ -141,7 +141,7 @@ function Trackeduserproducts({ products, username, navigation }) {
                     },
                     shadowOpacity: 0.25,
                     shadowRadius: 3.5,
-                    elevation: 6,
+                    // elevation: 6,
                   }}
                 >
                   <Icon name="delete-outline" size={29} color="white" />
@@ -195,13 +195,17 @@ function Trackeduserproducts({ products, username, navigation }) {
                 borderWidth: 1,
                 padding: 6,
                 borderColor: "brown",
+                borderRadius: 10,
               }}
             >
               <Text
                 style={{
-                  color: "lightgreen",
+                  color: "#73a802",
                   fontWeight: "600",
                   fontSize: 12,
+                  borderColor: "black",
+                  borderBottomWidth: 1,
+                  paddingBottom: 8,
                 }}
               >
                 Lowest Price:
@@ -210,7 +214,14 @@ function Trackeduserproducts({ products, username, navigation }) {
                   {products.lowestprice}
                 </Text>
               </Text>
-              <Text style={{ color: "red", fontWeight: "600", fontSize: 12 }}>
+              <Text
+                style={{
+                  color: "red",
+                  fontWeight: "600",
+                  fontSize: 12,
+                  paddingTop: 8,
+                }}
+              >
                 Highest Price:
                 <Text style={{ fontWeight: "bold", color: "red" }}>
                   {"\u20B9"}

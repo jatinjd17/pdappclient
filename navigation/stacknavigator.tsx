@@ -242,7 +242,7 @@ const SettingsStackNavigator = ({ navigation }) => {
                 marginTop: 2,
                 tintColor: "white",
               }}
-              source={require("../assets/icons/settings.png")}
+              source={require("../assets/icons/checklist.png")}
               resizeMode="contain"
             />
             <View style={{ marginLeft: 5, marginTop: 2 }}>
@@ -254,7 +254,7 @@ const SettingsStackNavigator = ({ navigation }) => {
                   color: "white",
                 }}
               >
-                Settings
+                Tracking Products
               </Text>
             </View>
           </View>

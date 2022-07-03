@@ -181,7 +181,7 @@ const Tabs = () => {
               }}
             >
               <Image
-                source={require("../assets/icons/settings1.png")}
+                source={require("../assets/icons/checklist.png")}
                 resizeMode="contain"
                 style={{
                   width: 25,
@@ -193,7 +193,7 @@ const Tabs = () => {
               <Text
                 style={{ color: focused ? "#e32f45" : "#748c94", fontSize: 12 }}
               >
-                Settings
+                Tracking Products
               </Text>
             </View>
           ),

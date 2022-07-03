@@ -200,13 +200,17 @@ function Search({ navigation }) {
                   borderWidth: 1,
                   padding: 6,
                   borderColor: "brown",
+                  borderRadius: 10,
                 }}
               >
                 <Text
                   style={{
-                    color: "lightgreen",
+                    color: "#73a802",
                     fontWeight: "600",
                     fontSize: 12,
+                    borderColor: "black",
+                    borderBottomWidth: 1,
+                    paddingBottom: 8,
                   }}
                 >
                   Lowest Price:
@@ -215,7 +219,14 @@ function Search({ navigation }) {
                     {item.lowestprice}
                   </Text>
                 </Text>
-                <Text style={{ color: "red", fontWeight: "600", fontSize: 12 }}>
+                <Text
+                  style={{
+                    color: "red",
+                    fontWeight: "600",
+                    fontSize: 12,
+                    paddingTop: 8,
+                  }}
+                >
                   Highest Price:
                   <Text style={{ fontWeight: "bold", color: "red" }}>
                     {"\u20B9"}
@@ -229,7 +240,7 @@ function Search({ navigation }) {
           <Text style={{ fontSize: 14, fontWeight: "900", marginTop: 8 }}>
             {item.producttitle}
           </Text>
-          <View>
+          {/* <View>
             {pro && (
               <Button
                 color={"#e32f45"}
@@ -249,6 +260,43 @@ function Search({ navigation }) {
                 }}
               />
             )}
+          </View> */}
+          <View>
+            <TouchableOpacity
+              style={
+                pro.includes(item.producttitle) === true
+                  ? {
+                      backgroundColor: "grey",
+                      padding: 10,
+                      borderRadius: 10,
+                      marginTop: 10,
+                    }
+                  : {
+                      backgroundColor: "#e32f45",
+                      padding: 10,
+                      borderRadius: 10,
+                      marginTop: 10,
+                    }
+              }
+              disabled={pro.includes(item.producttitle) === true ? true : false}
+              onPress={() => {
+                trackpro(item);
+                // setpro(item.producttitle);
+                // console.log(pro);
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                  textAlign: "center",
+                  fontWeight: "bold",
+                }}
+              >
+                {pro.includes(item.producttitle) === true
+                  ? `Tracking`
+                  : `Add to Watchlist`}
+              </Text>
+            </TouchableOpacity>
           </View>
         </TouchableOpacity>
       </View>

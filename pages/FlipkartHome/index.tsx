@@ -119,7 +119,7 @@ function FlipkartHome({ navigation }) {
     </View>
   );
   return (
-    <View>
+    <View style={{ backgroundColor: "#F3F7FD" }}>
       <Categoryamazfkdropdown
         navigation={navigation}
         platform={"flipkart"}

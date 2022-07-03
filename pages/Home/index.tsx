@@ -157,7 +157,7 @@ function Home({ navigation }) {
     </View>
   );
   return (
-    <View>
+    <View style={{ backgroundColor: "#FFF9F9" }}>
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
