@@ -8,7 +8,7 @@ function Viewallcard({ card }) {
     var dynamicurl = `https://www.flipkart.com/search?q=${prourlflipkart}`;
   }
   if (card.platform === "Amazon") {
-    var dynamicurl = `https://www.amazon.in/s?k=${prourlamazon}`;
+    var dynamicurl = `https://www.amazon.in/s?k=${prourlamazon}&tag=jatin170f-21`;
   }
 
   return (

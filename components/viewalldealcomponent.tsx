@@ -140,7 +140,7 @@ function ViewallDealcomponent({
       var dynamicurl = `https://www.flipkart.com/search?q=${prourlflipkart}`;
     }
     if (item.platform === "Amazon") {
-      var dynamicurl = `https://www.amazon.in/s?k=${prourlamazon}`;
+      var dynamicurl = `https://www.amazon.in/s?k=${prourlamazon}&tag=jatin170f-21`;
     }
     return (
       <View style={{ marginHorizontal: 6 }}>

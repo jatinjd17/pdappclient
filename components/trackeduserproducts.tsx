@@ -19,7 +19,7 @@ function Trackeduserproducts({ products, username, navigation }) {
     var dynamicurl = `https://www.flipkart.com/search?q=${prourlflipkart}`;
   }
   if (products.platform === "Amazon") {
-    var dynamicurl = `https://www.amazon.in/s?k=${prourlamazon}`;
+    var dynamicurl = `https://www.amazon.in/s?k=${prourlamazon}&tag=jatin170f-21`;
   }
 
   const deleteproduct = (username, productid) => {
