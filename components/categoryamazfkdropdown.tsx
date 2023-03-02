@@ -70,10 +70,10 @@ function Categoryamazfkdropdown({ navigation, platform, category, home }) {
       searchPlaceholder="Search categories"
       autoScroll={true}
       onSelectItem={(item) => {
-        console.log(item);
+        // console.log(item);
 
         if (item.value === "") {
-          console.log("Triggered");
+          // console.log("Triggered");
 
           if (platform === "flipkart") {
             navigation.replace("fk");

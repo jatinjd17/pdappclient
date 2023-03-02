@@ -6,7 +6,7 @@ function ViewAll({ route, navigation }) {
   const { viewalldealtime, category, dealtimecat, originalviewalldealtime } =
     route.params;
 
-  console.log(viewalldealtime);
+  // console.log(viewalldealtime);
 
   return (
     <View style={{ backgroundColor: "#FFF9F9" }}>

@@ -1,30 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Dialog, { DialogContent } from "react-native-popup-dialog";
-import {
-  Linking,
-  Text,
-  TouchableOpacity,
-  View,
-  Image,
-  Button,
-  TouchableNativeFeedback,
-} from "react-native";
-import { deletetrackedproductbyuser } from "../actions/trackproduct";
+import { Linking, Text, TouchableOpacity, View, Image } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { getData } from "../actions/login";
 
 function Trackeduserproducts({ products, username, navigation }) {
-  const [visible, setvisible] = useState(false);
-  // const prourlflipkart = products?.producturl.replace(/-/g, " ").slice(0, -7);
-  // const prourlamazon = products?.producturl.replace(/-/g, "+").slice(0, -7);
-  // if (products.platform === "Flipkart") {
-  //   var dynamicurl = `https://www.flipkart.com/search?q=${prourlflipkart}`;
-  // }
-  // if (products.platform === "Amazon") {
-  //   var dynamicurl = `https://www.amazon.in/s?k=${prourlamazon}&tag=jatin170f-21`;
-  // }
-
-  const deleteproduct = (username, productid) => {
+  const deleteproduct = (username) => {
     fetch("http://3.110.124.205:8000/999", {
       method: "POST",
       headers: {
@@ -35,30 +14,16 @@ function Trackeduserproducts({ products, username, navigation }) {
         email: username,
         product: `${products.product}`,
       }),
-      // body: JSON.stringify({
-      //   url: `https://www.pricebefore.com/price-drops/?category=laptops&price-drop=${dealtime}&more=true`,
-      // }),
     })
       .then((response) => response.json())
       .then((data) => {
         if (!data) {
           return null;
         }
-        // console.log("4444444444444444444444444444");
-        // console.log(data);
-        // console.log("55555555555555555555");
       })
       .catch((e) => {
         console.log(e);
       });
-
-    // deletetrackedproductbyuser(username, productid)
-    //   .then((data) => {
-    //     console.log(data);
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //   });
   };
 
   useEffect(() => {}, []);
@@ -157,20 +122,11 @@ function Trackeduserproducts({ products, username, navigation }) {
               >
                 Tracking
               </Text>
-              {/* <Button
-                title="Untrack"
-                onPress={() => {
-                  // setvisible(true);
-                  //   this.setState({ visible: true });
-                  deleteproduct(username, products._id);
-                  navigation.replace("settings");
-                }} 
-              />*/}
               <TouchableOpacity
                 onPress={() => {
                   // setvisible(true);
                   //   this.setState({ visible: true });
-                  deleteproduct(username, products._id);
+                  deleteproduct(username);
                   navigation.replace("settings");
                 }}
                 style={{ marginRight: -15 }}
@@ -205,15 +161,6 @@ function Trackeduserproducts({ products, username, navigation }) {
                   </Text>
                 </View>
               </TouchableOpacity>
-
-              {/* <Dialog
-                visible={visible}
-                onTouchOutside={() => {
-                  setvisible(false);
-                }}
-              >
-                <DialogContent>{"sad"}</DialogContent>
-              </Dialog> */}
             </View>
             <View style={{ flex: 1, flexDirection: "row" }}>
               <View style={{ flexDirection: "column" }}>

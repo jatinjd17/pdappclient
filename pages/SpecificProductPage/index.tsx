@@ -30,8 +30,7 @@ export default function SpecificProductPage({ route, navigation }) {
   } = route.params;
 
   const [extractedData, SetExtractedData]: any = useState("");
-  const [FinalProductLink, SetFinalProductLink]: any = useState("");
-  const [UserEmail, SetUserEmail]: any = useState("");
+  const [UserEmail, SetUserEmail]: any = useState(null);
   const [AddtoWatchlistButton, SetAddtoWatchlistButton]: any = useState(true);
 
   useEffect(() => {
@@ -49,18 +48,12 @@ export default function SpecificProductPage({ route, navigation }) {
       body: JSON.stringify({
         url: `https://www.pricebefore.com/${producturl}.html`,
       }),
-      // body: JSON.stringify({
-      //   url: `https://www.pricebefore.com/price-drops/?category=laptops&price-drop=${dealtime}&more=true`,
-      // }),
     })
       .then((response) => response.json())
       .then((data) => {
         if (!data) {
           return null;
         }
-        // console.log("4444444444444444444444444444");
-        // console.log(data);
-        // console.log("55555555555555555555");
         SetExtractedData(data);
         getData("user").then((data) => {
           SetUserEmail(data);
@@ -102,22 +95,15 @@ export default function SpecificProductPage({ route, navigation }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-      // body: JSON.stringify({
-      //   url: `https://www.pricebefore.com/price-drops/?category=laptops&price-drop=${dealtime}&more=true`,
-      // }),
     })
       .then((response) => response.json())
       .then((data) => {
         if (!data) {
           return null;
         }
-        // console.log("8888888888888888888888888888888");
-        console.log(data);
         if (data.success) {
           SetAddtoWatchlistButton(false);
         }
-        // console.log("999999999999999999999999999999");
-        // SetExtractedData(data);
       })
       .catch((e) => {
         console.log(e);
@@ -156,18 +142,12 @@ export default function SpecificProductPage({ route, navigation }) {
             borderColor: "orange",
           }}
           onPress={() => Linking.openURL(FinalLink)}
-          // onPress={() => {
-          //   console.log(FinalLink);
-          //   console.log(linkk);
-          // }}
         >
           <Text style={{ fontWeight: "bold", fontSize: 18, color: "white" }}>
             {platformm}
           </Text>
         </TouchableOpacity>
       );
-
-      //   console.log(link);
     }
   };
 
@@ -208,8 +188,7 @@ export default function SpecificProductPage({ route, navigation }) {
   };
 
   const CheckIfProductWatchlist = () => {
-    if (extractedData != 0 && UserEmail != 0) {
-      // const email = await getData("user");
+    if (extractedData != 0 && UserEmail != null) {
       fetch("http://3.110.124.205:8000/888", {
         method: "POST",
         headers: {
@@ -220,24 +199,17 @@ export default function SpecificProductPage({ route, navigation }) {
           email: UserEmail,
           product: extractedData?.product,
         }),
-        // body: JSON.stringify({
-        //   url: `https://www.pricebefore.com/price-drops/?category=laptops&price-drop=${dealtime}&more=true`,
-        // }),
       })
         .then((response) => response.json())
         .then((data) => {
           if (!data) {
             return null;
           }
-          console.log("8888888888888888888888888888888");
-          console.log(data);
           if (data.Found) {
             SetAddtoWatchlistButton(false);
           } else {
             SetAddtoWatchlistButton(true);
           }
-          console.log("999999999999999999999999999999");
-          // SetExtractedData(data);
         })
         .catch((e) => {
           console.log(e);
@@ -341,18 +313,6 @@ export default function SpecificProductPage({ route, navigation }) {
         <TouchableOpacity
           onPress={() => AddtoWatchList()}
           disabled={AddtoWatchlistButton ? false : true}
-          // style={[
-          //   AddtoWatchlistButton
-          //     ? { backgroundColor: "red" }
-          //     : {
-          //         flexDirection: "row",
-          //         borderWidth: 1,
-          //         borderRadius: 15,
-          //         paddingHorizontal: 5,
-          //         // alignItems: "center",
-          //         // backgroundColor: "red",
-          //       },
-          // ]}
           style={[
             styles.text,
             AddtoWatchlistButton ? styles.bgcolorred : styles.bgcolorgrey,
@@ -382,16 +342,10 @@ export default function SpecificProductPage({ route, navigation }) {
 
           {AddtoWatchlistButton ? (
             <Text
-              // numberOfLines={3}
-              // ellipsizeMode="tail"
               style={{
                 fontSize: 10,
                 fontWeight: "700",
-                // paddingTop: 10,
                 justifyContent: "center",
-                // marginBottom: 3,
-                // textAlign: "center",
-                // height: 40,
                 verticalAlign: "middle",
                 marginTop: -2,
                 color: "white",
@@ -401,16 +355,10 @@ export default function SpecificProductPage({ route, navigation }) {
             </Text>
           ) : (
             <Text
-              // numberOfLines={3}
-              // ellipsizeMode="tail"
               style={{
                 fontSize: 10,
                 fontWeight: "700",
-                // paddingTop: 10,
                 justifyContent: "center",
-                // marginBottom: 3,
-                // textAlign: "center",
-                // height: 40,
                 verticalAlign: "middle",
                 marginTop: -2,
                 color: "white",
@@ -435,56 +383,7 @@ export default function SpecificProductPage({ route, navigation }) {
           {Featuress()}
         </View>
       </View>
-      {/* <View>
-        <TouchableOpacity
-          style={
-            trakpro.includes(card.producttitle) === true
-              ? {
-                  backgroundColor: "grey",
-                  padding: 10,
-                  borderRadius: 10,
-                  marginTop: 10,
-                }
-              : {
-                  backgroundColor: "#e32f45",
-                  padding: 10,
-                  borderRadius: 10,
-                  marginTop: 10,
-                }
-          }
-          disabled={trakpro.includes(card.producttitle) === true ? true : false}
-          onPress={() => {
-            trackpro();
-            // settrakpro(card.producttitle);
-            // console.log(trakpro);
-          }}
-        >
-          <Text style={{ color: "white", fontWeight: "bold" }}>
-            {trakpro.includes(card.producttitle) === true
-              ? `Tracking`
-              : `Add to Watchlist`}
-          </Text>
-        </TouchableOpacity>
-      </View> */}
-      {/* <Text>{product}</Text>
-      <Text>{price}</Text>
-      <Text>{highestprice}</Text>
-      <Text>{lowestprice}</Text>
-      <Text>{percent}</Text>
-      <Text>{platform}</Text>
-      <Text>{discountprice}</Text>
-      <Text>{category}</Text>
-      <Text>{imageurl}</Text>
-      <Text>{producturl}</Text> */}
-      {/* {extractedData == 0 ? (
-        <ActivityIndicator
-          style={{ marginTop: 15 }}
-          color="red"
-          size={"large"}
-        />
-      ) : (
-        <View style={{ marginTop: 20, marginBottom: 10 }}>{ProductLink()}</View>
-      )} */}
+
       {extractedData == 0 ? (
         <ActivityIndicator
           style={{ marginTop: 50 }}

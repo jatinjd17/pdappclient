@@ -15,11 +15,7 @@ function ViewAllAmazFk({ route, navigation }) {
       />
 
       <View>
-        <Viewallamazfkcomponent
-          platform={platform}
-          category={category}
-          navigation={navigation}
-        />
+        <Viewallamazfkcomponent category={category} navigation={navigation} />
       </View>
     </View>
   );

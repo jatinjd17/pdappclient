@@ -4,7 +4,6 @@ import { Image, View, Text } from "react-native";
 
 import ViewAll from "../pages/Viewallpage";
 import Home from "../pages/Home";
-import FlipkartHome from "../pages/FlipkartHome";
 import AmazonHome from "../pages/AmazonHome";
 import ViewAllAmazFk from "../pages/viewallamazfkpage";
 import Search from "../pages/Search";
@@ -63,67 +62,6 @@ const HomeStackNavigator = () => {
       <Stack.Screen
         name="urlspecificproductpage"
         component={UrlSpecificProductPage}
-      />
-    </Stack.Navigator>
-  );
-};
-
-const FlipkartStackNavigator = () => {
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerTintColor: "white",
-        headerStyle: {
-          backgroundColor: "#2988f2",
-        },
-        headerTitle: (
-          props // App Logo
-        ) => (
-          <View style={{ flexDirection: "row" }}>
-            <Image
-              style={{ width: 30, height: 30 }}
-              source={require("../assets/icons/fk.png")}
-              resizeMode="contain"
-            />
-            <Text
-              style={{
-                marginTop: 5,
-                marginLeft: 5,
-                fontWeight: "bold",
-                color: "white",
-              }}
-            >
-              Flipkart
-            </Text>
-          </View>
-        ),
-        headerTitleStyle: { flex: 1, textAlign: "center" },
-      }}
-    >
-      <Stack.Screen name="fk" component={FlipkartHome} />
-      <Stack.Screen name="viewall" component={ViewAllAmazFk} />
-      <Stack.Screen
-        options={{
-          headerStyle: {
-            backgroundColor: "#e32f45",
-          },
-        }}
-        name="signin"
-        component={Signin}
-      />
-      <Stack.Screen
-        options={{
-          headerStyle: {
-            backgroundColor: "#e32f45",
-          },
-        }}
-        name="signup"
-        component={Signup}
-      />
-      <Stack.Screen name="settings" component={Settings} />
-      <Stack.Screen
-        name="specificproductpage"
-        component={SpecificProductPage}
       />
     </Stack.Navigator>
   );
@@ -307,7 +245,7 @@ const SettingsStackNavigator = ({ navigation }) => {
         headerRight: () => (
           <TouchableOpacity
             onPress={() => {
-              removeStorage("token", "user", "username");
+              removeStorage("token", "user");
               navigation.reset({
                 index: 0,
                 routes: [
@@ -371,7 +309,6 @@ const SettingsStackNavigator = ({ navigation }) => {
 
 export {
   HomeStackNavigator,
-  FlipkartStackNavigator,
   AmazonStackNavigator,
   SearchStackNavigator,
   SettingsStackNavigator,

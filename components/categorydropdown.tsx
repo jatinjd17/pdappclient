@@ -72,10 +72,10 @@ function Categorydropdown({
       searchPlaceholder="Search categories"
       autoScroll={true}
       onSelectItem={(item) => {
-        console.log(item);
+        // console.log(item);
 
         if (item.value === "") {
-          console.log("Triggered");
+          // console.log("Triggered");
           navigation.replace("viewall", {
             viewalldealtime: originalviewalldealtime,
             category: item.value,

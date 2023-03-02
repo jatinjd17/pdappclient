@@ -3,7 +3,6 @@ import React from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import {
   AmazonStackNavigator,
-  FlipkartStackNavigator,
   HomeStackNavigator,
   SearchStackNavigator,
   SettingsStackNavigator,
@@ -83,38 +82,6 @@ const Tabs = () => {
           ),
         }}
       />
-      {/* <Tab.Screen
-        name="Flipkart"
-        component={FlipkartStackNavigator}
-        options={{
-          unmountOnBlur: false,
-          tabBarIcon: ({ focused }) => (
-            <View
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-                top: 5,
-              }}
-            >
-              <Image
-                source={require("../assets/icons/fk2.png")}
-                resizeMode="contain"
-                style={{
-                  width: 25,
-                  height: 25,
-                  //   tintColor: "#e32f95",
-                  tintColor: focused ? "#e32f45" : "#748c94",
-                }}
-              />
-              <Text
-                style={{ color: focused ? "#e32f45" : "#748c94", fontSize: 12 }}
-              >
-                Flipkart
-              </Text>
-            </View>
-          ),
-        }}
-      /> */}
 
       <Tab.Screen
         name="Amazon"

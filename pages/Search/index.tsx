@@ -6,107 +6,26 @@ import {
   TextInput,
   FlatList,
   TouchableOpacity,
-  Linking,
   TouchableWithoutFeedback,
   Keyboard,
   Button,
   ActivityIndicator,
 } from "react-native";
-import { getSearchdataaction } from "../../actions/search";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { isAuth } from "../../actions/login";
-import { trackallproductsuser, Trackproduct } from "../../actions/trackproduct";
 
 function Search({ navigation }) {
   const [query, setquery]: any = useState("");
-  const [searchdata, setsearchdata] = useState([]);
-  const [pro, setpro] = useState([]);
-  const [username, setusername] = useState("");
   const [extractedData, SetExtractedData]: any = useState("");
   const [pageNo, SetPageNo]: any = useState(1);
   const [triggerNextPage, SettriggerNextPage]: any = useState(false);
-  let many = [];
 
   const clearInput = () => {
     setquery("");
-    setsearchdata([]);
   };
 
-  useEffect(() => {
-    isAuth().then((data) => {
-      if (data) {
-        setusername(data.userr);
-        blogs(data.userr);
-      }
-    });
-  }, []);
-
-  const blogs = async (username) => {
-    const all: any = await allBlogs(username);
-    if (all) {
-      all.forEach((prod) => {
-        many.push(prod.product);
-      });
-      setpro(many);
-    }
-  };
-
-  const allBlogs = (username) => {
-    return trackallproductsuser(username).then((data) => {
-      if (!data) {
-        return false;
-      } else {
-        console.log(data);
-        return data.trackedproducts;
-      }
-    });
-  };
-
-  const trackpro = async (item) => {
-    if (username) {
-      const yeye = {
-        username1: username,
-        productname1: {
-          product: item.producttitle,
-          price: item.finalprice,
-          highestprice: item.highestprice,
-          lowestprice: item.lowestprice,
-          percent: item.percent,
-          platform: item.platform,
-          discountprice: item.discountprice,
-          category: item.category,
-          imageurl: item.imageurl,
-          producturl: item.producturl,
-          mailsent: false,
-        },
-      };
-
-      console.log(yeye);
-
-      Trackproduct(yeye).then((data) => {
-        if (data.error) {
-          console.log(data.error);
-          return;
-        }
-        if (data.success) {
-          console.log(data);
-          // setpro(item.producttitle);
-          setpro([...pro, item.producttitle]);
-
-          // settrakpro(card.producttitle);
-        }
-      });
-
-      console.log("issss auttthhhh");
-    }
-    if (!username) {
-      console.log("Nottttt auttthhhh");
-      navigation.navigate("signin");
-    }
-  };
+  useEffect(() => {}, []);
 
   const item = ({ item }: any) => {
-    const prourl = item.producturl.replace(/-/g, " ").slice(0, -7);
     return (
       <View style={{ marginHorizontal: 8, marginVertical: 6 }}>
         <TouchableOpacity
@@ -223,112 +142,12 @@ function Search({ navigation }) {
                   </Text>
                 </View>
               </View>
-
-              {/* <View
-                style={{
-                  borderWidth: 1,
-                  padding: 6,
-                  borderColor: "brown",
-                  borderRadius: 10,
-                }}
-              >
-                <Text
-                  style={{
-                    color: "#73a802",
-                    fontWeight: "600",
-                    fontSize: 12,
-                    borderColor: "black",
-                    borderBottomWidth: 1,
-                    paddingBottom: 8,
-                  }}
-                >
-                  Lowest Price:
-                  <Text style={{ fontWeight: "bold", color: "green" }}>
-                    {"\u20B9"}
-                    {item.lowestprice}
-                  </Text>
-                </Text>
-                <Text
-                  style={{
-                    color: "red",
-                    fontWeight: "600",
-                    fontSize: 12,
-                    paddingTop: 8,
-                  }}
-                >
-                  Highest Price:
-                  <Text style={{ fontWeight: "bold", color: "red" }}>
-                    {"\u20B9"}
-                    {item.highestprice}
-                  </Text>
-                </Text>
-              </View> */}
             </View>
           </View>
 
           <Text style={{ fontSize: 14, fontWeight: "900", marginTop: 8 }}>
             {item.producttitle}
           </Text>
-          {/* <View>
-            {pro && (
-              <Button
-                color={"#e32f45"}
-                disabled={
-                  pro.includes(item.producttitle) === true ? true : false
-                }
-                title={
-                  pro.includes(item.producttitle) === true
-                    ? `Tracking`
-                    : `Add to Watchlist`
-                }
-                onPress={() => {
-                  trackpro(item);
-                  // setpro;
-                  // settrakpro(card.producttitle);
-                  // console.log(trakpro);
-                }}
-              />
-            )}
-          </View> */}
-          {/* ?????????????????NEW>>>>>>>>>???????????????? */}
-          {/* <View>
-            <TouchableOpacity
-              style={
-                pro.includes(item.producttitle) === true
-                  ? {
-                      backgroundColor: "grey",
-                      padding: 10,
-                      borderRadius: 10,
-                      marginTop: 10,
-                    }
-                  : {
-                      backgroundColor: "#e32f45",
-                      padding: 10,
-                      borderRadius: 10,
-                      marginTop: 10,
-                    }
-              }
-              disabled={pro.includes(item.producttitle) === true ? true : false}
-              onPress={() => {
-                trackpro(item);
-                // setpro(item.producttitle);
-                // console.log(pro);
-              }}
-            >
-              <Text
-                style={{
-                  color: "white",
-                  textAlign: "center",
-                  fontWeight: "bold",
-                }}
-              >
-                {pro.includes(item.producttitle) === true
-                  ? `Tracking`
-                  : `Add to Watchlist`}
-              </Text>
-            </TouchableOpacity>
-          </View> */}
-          {/* ?????????????????NEWEnd>>>>>>>>>???????????????? */}
         </TouchableOpacity>
       </View>
     );
@@ -344,9 +163,6 @@ function Search({ navigation }) {
       body: JSON.stringify({
         url: `https://www.pricebefore.com/search/?q=${text}&page=1`,
       }),
-      // body: JSON.stringify({
-      //   url: `https://www.pricebefore.com/price-drops/?category=laptops&price-drop=${dealtime}&more=true`,
-      // }),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -358,9 +174,6 @@ function Search({ navigation }) {
           SettriggerNextPage(false);
           return null;
         }
-        console.log("4444444444444444444444444444");
-        console.log(data);
-        console.log("55555555555555555555");
         SettriggerNextPage(true);
         SetExtractedData(data);
       })
@@ -370,7 +183,7 @@ function Search({ navigation }) {
   };
 
   const GetExtractedDataByPage = (text) => {
-    console.log(pageNo);
+    // console.log(pageNo);
     SetPageNo(pageNo + 1);
     fetch("http://3.110.124.205:8000/333", {
       method: "POST",
@@ -381,9 +194,6 @@ function Search({ navigation }) {
       body: JSON.stringify({
         url: `https://www.pricebefore.com/search/?q=${text}&page=${pageNo + 1}`,
       }),
-      // body: JSON.stringify({
-      //   url: `https://www.pricebefore.com/price-drops/?category=laptops&price-drop=${dealtime}&more=true`,
-      // }),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -395,9 +205,6 @@ function Search({ navigation }) {
           SettriggerNextPage(false);
           return null;
         }
-        console.log("4444444444444444444444444444");
-        console.log(data);
-        console.log("55555555555555555555");
         SettriggerNextPage(true);
         SetExtractedData([...extractedData, ...data]);
       })
@@ -416,46 +223,31 @@ function Search({ navigation }) {
         style={{
           flexDirection: "row",
           backgroundColor: "white",
-          // width: "100%",
           marginTop: 10,
           borderRadius: 10,
           borderColor: "red",
           borderWidth: 1,
           marginHorizontal: 12,
           padding: 4,
-          // marginRight: 10,
         }}
       >
         <View style={{ flex: 1 }}>
           <TextInput
             style={{
-              // backgroundColor: "white",
               padding: 7,
               paddingVertical: 9,
-              // borderRadius: 10,
               marginLeft: 9,
-              // borderColor: "red",
-              // borderWidth: 1,
             }}
             value={query}
             placeholder="Search Products"
             placeholderTextColor={"red"}
             onChangeText={(text) => {
               setquery(text);
-              console.log(query);
+              // console.log(query);
               if (!text) {
-                setsearchdata([]);
               }
               if (text) {
                 GetExtractedData(text);
-                // setsearchdata(text)
-                // getSearchdataaction(text)
-                //   .then((data) => {
-                //     setsearchdata(data);
-                //   })
-                //   .catch((e) => {
-                //     console.log(e);
-                //   });
               }
             }}
           />
@@ -463,7 +255,6 @@ function Search({ navigation }) {
         <View
           style={{
             alignSelf: "center",
-            // marginRight: 8,
             marginRight: 6,
           }}
         >

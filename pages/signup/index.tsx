@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
-  Button,
-  SafeAreaView,
   TextInput,
   StyleSheet,
   View,
@@ -11,7 +9,6 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { SignUp } from "../../actions/login";
 
 function Signup({ navigation }) {
   const [values, setValues] = useState({
@@ -32,13 +29,6 @@ function Signup({ navigation }) {
 
   const onSubmit = (data) => {
     setValues({ ...values, loading: true });
-    let formdata = new FormData();
-    console.log(data);
-    formdata.append("name", data.name);
-    formdata.append("email", data.email);
-    formdata.append("password", data.password);
-    formdata.append("photo", data.photo);
-
     fetch("http://3.110.124.205:8000/555", {
       method: "POST",
       headers: {
@@ -46,20 +36,14 @@ function Signup({ navigation }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-      // body: JSON.stringify({
-      //   url: `https://www.pricebefore.com/price-drops/?category=laptops&price-drop=${dealtime}&more=true`,
-      // }),
     })
-      .then((response) =>
-        // console.log(response);
-        response.json()
-      )
+      .then((response) => response.json())
       .then((data) => {
         if (!data) {
           return null;
         }
         if (data.error) {
-          console.log(data.error);
+          // console.log(data.error);
           setValues({ ...values, loading: false, error: data.error });
           return null;
         }
@@ -69,36 +53,10 @@ function Signup({ navigation }) {
           message: data.success,
           error: "",
         });
-        console.log("8888888888888888888888888888888");
-        console.log(data);
-        console.log("999999999999999999999999999999");
-        // SetExtractedData(data);
       })
       .catch((e) => {
-        // console.log(e);
         setValues({ ...values, loading: false, error: data.error });
       });
-
-    // SignUp(data)
-    //   .then((data) => {
-    //     console.log(data);
-    //     if (data.error) {
-    //       setValues({ ...values, loading: false, error: data.error });
-    //       console.log(data.error);
-
-    //       return;
-    //     }
-    //     console.log(data);
-    //     setValues({
-    //       ...values,
-    //       loading: false,
-    //       message: data.message,
-    //       error: "",
-    //     });
-    //   })
-    //   .catch((e) => {
-    //     setValues({ ...values, loading: false, error: data.error });
-    //   });
   };
 
   return (
@@ -106,9 +64,9 @@ function Signup({ navigation }) {
       style={{ flex: 1, flexDirection: "column", justifyContent: "center" }}
       behavior="position"
       // enabled
-      keyboardVerticalOffset={-150}
+      keyboardVerticalOffset={-100}
     >
-      <ScrollView style={styles.cantainer}>
+      <ScrollView keyboardShouldPersistTaps="handled" style={styles.cantainer}>
         <Text style={styles.headerTxt}>WELCOME</Text>
         <View style={styles.subView}>
           <Text style={styles.subTxt}>Signup</Text>
@@ -136,12 +94,10 @@ function Signup({ navigation }) {
             }}
           />
           {errors?.username ? (
-            <Text style={{ marginLeft: 40, color: "red" }}>
+            <Text style={{ marginLeft: 55, color: "red" }}>
               {errors?.username && errors.username.message}
             </Text>
           ) : null}
-          {/* <TextInput style={styles.nameInput} placeholder="Username" /> */}
-          {/* /////////////////////////NEW????????????????????? */}
           <Controller
             control={control}
             name="email"
@@ -173,20 +129,10 @@ function Signup({ navigation }) {
             }}
           />
           {errors?.email ? (
-            <Text style={{ marginLeft: 40, color: "red" }}>
+            <Text style={{ marginLeft: 55, color: "red" }}>
               {errors?.email && errors.email.message}
             </Text>
           ) : null}
-
-          {/* /////////////////////////END????????????????????? */}
-
-          {/* <TextInput
-          style={styles.nameInput}
-          placeholder="Email"
-          onChangeText={(email) => {
-            this.setState({ email });
-          }}
-        /> */}
 
           <Controller
             control={control}
@@ -214,22 +160,12 @@ function Signup({ navigation }) {
             }}
           />
           {errors?.password ? (
-            <Text style={{ marginLeft: 40, color: "red" }}>
+            <Text style={{ marginLeft: 55, color: "red" }}>
               {errors?.password && errors.password.message}
             </Text>
           ) : null}
-          {/* <TextInput
-          style={styles.nameInput}
-          placeholder="Password"
-          onChangeText={(pass) => {
-            this.setState({ pass });
-          }}
-        /> */}
-          <TouchableOpacity
-            style={styles.btn}
-            // onPress={this.signUp}
-            onPress={handleSubmit(onSubmit)}
-          >
+
+          <TouchableOpacity style={styles.btn} onPress={handleSubmit(onSubmit)}>
             <Text style={styles.btnTxt}>SignUp</Text>
           </TouchableOpacity>
 
@@ -274,9 +210,6 @@ function Signup({ navigation }) {
               onPress={() => {
                 navigation.replace("signin");
               }}
-              // onPress={() =>
-              //   // this.props.navigation.navigate("login")
-              // }
             >
               <Text style={styles.loginTxt}>Login</Text>
             </TouchableOpacity>
@@ -284,68 +217,6 @@ function Signup({ navigation }) {
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
-    // <SafeAreaView>
-    //   <Controller
-    //     control={control}
-    //     name="name"
-    //     render={({ field: { onChange, value, onBlur } }) => (
-    //       <TextInput
-    //         placeholder="Enter your name here"
-    //         value={value}
-    //         onBlur={onBlur}
-    //         onChangeText={(value) => onChange(value)}
-    //       />
-    //     )}
-    //     rules={{
-    //       required: {
-    //         value: true,
-    //         message: "Field is required!",
-    //       },
-    //     }}
-    //   />
-    //   <Controller
-    //     control={control}
-    //     name="email"
-    //     render={({ field: { onChange, value, onBlur } }) => (
-    //       <TextInput
-    //         placeholder="Enter your email here"
-    //         value={value}
-    //         onBlur={onBlur}
-    //         onChangeText={(value) => onChange(value)}
-    //         keyboardType="email-address"
-    //         autoComplete="email"
-    //         autoCapitalize="none"
-    //       />
-    //     )}
-    //     rules={{
-    //       required: {
-    //         value: true,
-    //         message: "Field is required!",
-    //       },
-    //     }}
-    //   />
-    //   <Controller
-    //     control={control}
-    //     name="password"
-    //     render={({ field: { onChange, value, onBlur } }) => (
-    //       <TextInput
-    //         placeholder="Enter your password here"
-    //         value={value}
-    //         onBlur={onBlur}
-    //         onChangeText={(value) => onChange(value)}
-    //         textContentType="password"
-    //         secureTextEntry={true}
-    //       />
-    //     )}
-    //     rules={{
-    //       required: {
-    //         value: true,
-    //         message: "Field is required!",
-    //       },
-    //     }}
-    //   />
-    //   <Button title="Submit" onPress={handleSubmit(onSubmit)} />
-    // </SafeAreaView>
   );
 }
 
@@ -381,7 +252,7 @@ const styles = StyleSheet.create({
     width: 270,
     marginLeft: 55,
     borderBottomWidth: 1,
-    marginTop: 30,
+    marginTop: 20,
   },
   btn: {
     height: 50,
@@ -389,7 +260,7 @@ const styles = StyleSheet.create({
     backgroundColor: "blue",
     borderRadius: 80,
     borderWidth: 2,
-    marginLeft: 90,
+    marginLeft: 80,
     marginTop: 30,
     justifyContent: "center",
     alignItems: "center",

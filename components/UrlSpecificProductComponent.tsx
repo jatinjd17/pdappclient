@@ -21,7 +21,7 @@ export default function UrlSpecificProduct({ route, navigation }) {
   const [extractedData, SetExtractedData]: any = useState("");
   const [isError, SetisError]: any = useState(false);
   const [isLoading, SetisLoading]: any = useState(false);
-  const [UserEmail, SetUserEmail]: any = useState("");
+  const [UserEmail, SetUserEmail]: any = useState(null);
   const [AddtoWatchlistButton, SetAddtoWatchlistButton]: any = useState(true);
 
   useEffect(() => {
@@ -40,9 +40,6 @@ export default function UrlSpecificProduct({ route, navigation }) {
       body: JSON.stringify({
         url: `${producturl}`,
       }),
-      // body: JSON.stringify({
-      //   url: `https://www.pricebefore.com/price-drops/?category=laptops&price-drop=${dealtime}&more=true`,
-      // }),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -54,12 +51,9 @@ export default function UrlSpecificProduct({ route, navigation }) {
         if (data.errormessage) {
           SetisError(true);
         }
-        console.log("4444444444444444444444444444");
-        console.log(data);
-        console.log("55555555555555555555");
         SetExtractedData(data);
-        getData("user").then((data) => {
-          SetUserEmail(data);
+        getData("user").then((data1) => {
+          SetUserEmail(data1);
         });
       })
       .catch((e) => {
@@ -98,22 +92,15 @@ export default function UrlSpecificProduct({ route, navigation }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-      // body: JSON.stringify({
-      //   url: `https://www.pricebefore.com/price-drops/?category=laptops&price-drop=${dealtime}&more=true`,
-      // }),
     })
       .then((response) => response.json())
       .then((data) => {
         if (!data) {
           return null;
         }
-        console.log("8888888888888888888888888888888");
-        console.log(data);
-        console.log("999999999999999999999999999999");
         if (data.success) {
           SetAddtoWatchlistButton(false);
         }
-        // SetExtractedData(data);
       })
       .catch((e) => {
         console.log(e);
@@ -122,10 +109,6 @@ export default function UrlSpecificProduct({ route, navigation }) {
 
   const ProductLink = () => {
     if (extractedData != 0 && !isError) {
-      console.log("11111111111111111111");
-      console.log(extractedData);
-      console.log("2222222222222222222222222");
-      console.log("rrrrrruuuuuuuuuuunnnnnninnnnng");
       const platformm = extractedData?.platform;
       const linkk = extractedData?.productlink;
       const link = linkk?.split("?");
@@ -160,16 +143,11 @@ export default function UrlSpecificProduct({ route, navigation }) {
           </Text>
         </TouchableOpacity>
       );
-
-      //   console.log(link);
     }
   };
 
   const Featuress = () => {
     return extractedData?.features?.map((b: any, i: any) => {
-      // if (i <= 2) {
-      //   return null;
-      // }
       return (
         <View key={i} style={{ flexDirection: "row", marginVertical: 2 }}>
           <View>
@@ -184,7 +162,7 @@ export default function UrlSpecificProduct({ route, navigation }) {
   };
 
   const CheckIfProductWatchlist = () => {
-    if (extractedData != 0 && UserEmail != 0) {
+    if (!extractedData?.errormessage && UserEmail != null) {
       fetch("http://3.110.124.205:8000/888", {
         method: "POST",
         headers: {
@@ -195,24 +173,17 @@ export default function UrlSpecificProduct({ route, navigation }) {
           email: UserEmail,
           product: extractedData?.product,
         }),
-        // body: JSON.stringify({
-        //   url: `https://www.pricebefore.com/price-drops/?category=laptops&price-drop=${dealtime}&more=true`,
-        // }),
       })
         .then((response) => response.json())
         .then((data) => {
           if (!data) {
             return null;
           }
-          console.log("8888888888888888888888888888888");
-          console.log(data);
-          console.log("999999999999999999999999999999");
           if (data.Found) {
             SetAddtoWatchlistButton(false);
           } else {
             SetAddtoWatchlistButton(true);
           }
-          // SetExtractedData(data);
         })
         .catch((e) => {
           console.log(e);
@@ -321,18 +292,6 @@ export default function UrlSpecificProduct({ route, navigation }) {
             <TouchableOpacity
               onPress={() => AddtoWatchList()}
               disabled={AddtoWatchlistButton ? false : true}
-              // style={[
-              //   AddtoWatchlistButton
-              //     ? { backgroundColor: "red" }
-              //     : {
-              //         flexDirection: "row",
-              //         borderWidth: 1,
-              //         borderRadius: 15,
-              //         paddingHorizontal: 5,
-              //         // alignItems: "center",
-              //         // backgroundColor: "red",
-              //       },
-              // ]}
               style={[
                 styles.text,
                 AddtoWatchlistButton ? styles.bgcolorred : styles.bgcolorgrey,
@@ -362,16 +321,10 @@ export default function UrlSpecificProduct({ route, navigation }) {
 
               {AddtoWatchlistButton ? (
                 <Text
-                  // numberOfLines={3}
-                  // ellipsizeMode="tail"
                   style={{
                     fontSize: 10,
                     fontWeight: "700",
-                    // paddingTop: 10,
                     justifyContent: "center",
-                    // marginBottom: 3,
-                    // textAlign: "center",
-                    // height: 40,
                     verticalAlign: "middle",
                     marginTop: -2,
                     color: "white",
@@ -381,16 +334,10 @@ export default function UrlSpecificProduct({ route, navigation }) {
                 </Text>
               ) : (
                 <Text
-                  // numberOfLines={3}
-                  // ellipsizeMode="tail"
                   style={{
                     fontSize: 10,
                     fontWeight: "700",
-                    // paddingTop: 10,
                     justifyContent: "center",
-                    // marginBottom: 3,
-                    // textAlign: "center",
-                    // height: 40,
                     verticalAlign: "middle",
                     marginTop: -2,
                     color: "white",
@@ -418,7 +365,6 @@ export default function UrlSpecificProduct({ route, navigation }) {
         ) : (
           <View
             style={{
-              // flex: 1,
               alignItems: "center",
               justifyContent: "center",
               // marginTop: 200,
@@ -439,31 +385,14 @@ export default function UrlSpecificProduct({ route, navigation }) {
           color="red"
           size={"large"}
         />
-        // <View>
-        //   <Text>Invalid Link</Text>
-        // </View>
       )}
 
       {extractedData == 0 ? (
         // <ActivityIndicator
         <></>
       ) : (
-        //   style={{ marginTop: 50 }}
-        //   color="blue"
-        //   size={"large"}
-        // />
         <CheckIfProductWatchlist />
       )}
-
-      {/* {extractedData == 0 ? (
-        <ActivityIndicator
-          style={{ marginLeft: 170 }}
-          color="red"
-          size={"large"}
-        />
-      ) : (
-        // <View style={{ marginTop: 20, marginBottom: 10 }}>{ProductLink()}</View>
-      )} */}
     </ScrollView>
   );
 }

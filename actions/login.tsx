@@ -1,37 +1,4 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ServerURL } from "../url/url";
-
-export const SignUp = (formdata: any) => {
-  console.log(formdata);
-
-  return fetch(`${ServerURL}/api/signup`, {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(formdata),
-  })
-    .then((data) => {
-      return data.json();
-    })
-    .catch((e) => {
-      console.log(e);
-    });
-};
-
-export const SignIn = (data: any) => {
-  return fetch(`${ServerURL}/api/signin`, {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  }).then((data) => {
-    return data.json();
-  });
-};
 
 export const SignOut = (next: any) => {
   //   removeCookie("token");
@@ -69,12 +36,12 @@ export const getData = async (key) => {
   }
 };
 
-export const removeStorage = async (token, data, username) => {
+export const removeStorage = async (token, data) => {
   try {
     await AsyncStorage.removeItem(token);
     await AsyncStorage.removeItem(data);
     // await AsyncStorage.removeItem(username);
-    console.log("items removed");
+    // console.log("items removed");
     return true;
   } catch (exception) {
     return false;

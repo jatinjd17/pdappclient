@@ -7,12 +7,7 @@ import {
   View,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { isAuth } from "../../actions/login";
-import { trackallproductsuser } from "../../actions/trackproduct";
-// import Homepagecomponents from "../../components/homepagecomponents";
 import HomepagecomponentsNew from "../../components/homepagecomponentsNew";
-import fs from "fs";
-import datajson from "../../jatajson.json";
 import UrlSearchComponent from "../../components/UrlSearchComponent";
 
 const wait = (timeout) => {
@@ -20,87 +15,15 @@ const wait = (timeout) => {
 };
 
 function Home({ navigation }) {
-  // useEffect(() => {
-  //   isAuth().then((data) => {
-  //     if (data) {
-  //       setusername(data.username);
-  //     }
-  //   });
-  // });
-
-  const [username, setusername] = useState("");
-  const [trigger, settrigger] = useState(true);
-  const [userallproducts, setuserallproducts] = useState([]);
-  var jdsss = [];
-
-  // useEffect(() => {
-  //   isAuth().then((data) => {
-  //     if (data) {
-  //       setusername(data.username);
-  //       // trackallproductsuser(data.username).then((data) => {
-  //       //   // console.log(data.trackedproducts);
-  //       //   // settrigger(false);
-  //       //   // data.trackedproducts.forEach((element) => {
-  //       //   //   console.log(element.product);
-  //       //   // });
-  //       //   // data.trackedproducts.map((p, i) => {
-  //       //   //   // setuserallproducts(p.product);
-  //       //   //   // jdsss.push(p.product);
-  //       //   // });
-  //       //   // setuserallproducts(data.trackedproducts);
-  //       // });
-  //     }
-  //   });
-  // }, []);
-
-  // if (trigger) {
-  //   if (username) {
-  //     trackallproductsuser(username).then((data) => {
-  //       console.log(data.trackedproducts);
-  //       settrigger(false);
-  //       data.trackedproducts.forEach((element) => {
-  //         console.log(element.product);
-  //       });
-  //       // data.trackedproducts.map((p, i) => {
-  //       //   setuserallproducts(p.product);
-  //       // });
-  //       // setuserallproducts(data.trackedproducts);
-  //     });
-  //   }
-  // }
-
   const [refreshing, setRefreshing] = React.useState(false);
-  // const [trigger, settrigger] = useState(true);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(500).then(() => setRefreshing(false));
   }, []);
 
-  // const aut = async () => {
-  //   if (trigger) {
-  //     console.log(
-  //       "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr"
-  //     );
-  //     settrigger(false);
-  //     const isaut = await isAuth();
-  //     if (isaut) {
-  //       setusername(isaut.username);
-  //     }
-  //   }
-  // };
-
-  // aut();
-
   const getCurrentDate = () => {
-    // var date = new Date().getDate();
-    // var month = new Date().getMonth() + 1;
-    // var year = new Date().getFullYear();
-
     var time = new Date().toLocaleString();
-
-    //Alert.alert(date + '-' + month + '-' + year);
-    // You can turn it in to your desired format
     return (
       <View>
         <Text
@@ -112,19 +35,10 @@ function Home({ navigation }) {
           }}
         >
           Last Updated:{"  "}
-          {
-            // date.toString() +
-            //   "-" +
-            //   month.toString() +
-            //   "-" +
-            //   year.toString() +
-            //   "-" +
-            time.toString()
-          }
+          {time.toString()}
         </Text>
       </View>
     );
-    //format: d-m-y;
   };
 
   const DealsRowComponentBlock = ({
@@ -178,7 +92,6 @@ function Home({ navigation }) {
       {refreshing ? (
         <ActivityIndicator color="red" size={"large"} />
       ) : (
-        // <Text>Loading...</Text>
         <ScrollView
           contentContainerStyle={{ flexGrow: 1 }}
           horizontal={true}
@@ -224,7 +137,6 @@ function Home({ navigation }) {
             category={""}
             dealtimecat={"monthlydealcat"}
           />
-          <View>{jdsss ? <Text>{jdsss}</Text> : " "}</View>
         </View>
       </ScrollView>
     </View>

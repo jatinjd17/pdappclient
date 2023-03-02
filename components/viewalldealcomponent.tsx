@@ -1,19 +1,13 @@
 import React, { useEffect, useState } from "react";
 import {
   FlatList,
-  Linking,
   Text,
   TouchableOpacity,
   View,
   Image,
   ActivityIndicator,
-  Button,
 } from "react-native";
-import { viewalldealcataction } from "../actions/viewall";
-import Mobilecard from "./mobilecard";
 import Categorydropdown from "./categorydropdown";
-import { isAuth } from "../actions/login";
-import { trackallproductsuser, Trackproduct } from "../actions/trackproduct";
 
 function ViewallDealcomponent({
   dealtime,
@@ -22,130 +16,17 @@ function ViewallDealcomponent({
   dealtimecat,
   originalviewalldealtime,
 }) {
-  const [mobiles, setMobiles]: any = useState([]);
-  const [pro, setpro] = useState([]);
-  const [username, setusername] = useState("");
   const [extractedData, SetExtractedData]: any = useState("");
   const [pageNo, SetPageNo]: any = useState(1);
   const [triggerNextPage, SettriggerNextPage]: any = useState(false);
-  let many = [];
+  const [TriggerNoProductsAvailable, SetTriggerNoProductsAvailable]: any =
+    useState(false);
 
   useEffect(() => {
-    isAuth().then((data) => {
-      if (data) {
-        setusername(data.userr);
-        blogs(data.userr);
-      }
-    });
-    // Mob();
     GetExtractedData();
   }, []);
 
-  const Mob = async () => {
-    const all: any = await getallMobiless();
-    if (all) {
-      setMobiles(all);
-    }
-  };
-
-  const getallMobiless = async () => {
-    return viewalldealcataction({ dealtime, category }).then((data) => {
-      if (!data) {
-        return false;
-      } else {
-        console.log(data);
-        return { m: data };
-      }
-    });
-  };
-
-  const getAllMobilesHome = (mobiless: any) => {
-    if (mobiless != null) {
-      return mobiless.map((b: any, i: any) => {
-        return (
-          <View key={i}>
-            <Mobilecard card={b} />
-          </View>
-        );
-      });
-    } else {
-      return null;
-    }
-  };
-
-  const blogs = async (username) => {
-    const all: any = await allBlogs(username);
-    if (all) {
-      all.forEach((prod) => {
-        many.push(prod.product);
-      });
-      setpro(many);
-    }
-  };
-
-  const allBlogs = (username) => {
-    return trackallproductsuser(username).then((data) => {
-      if (!data) {
-        return false;
-      } else {
-        console.log(data);
-        return data.trackedproducts;
-      }
-    });
-  };
-
-  const trackpro = async (item) => {
-    if (username) {
-      const yeye = {
-        username1: username,
-        productname1: {
-          product: item.producttitle,
-          price: item.finalprice,
-          highestprice: item.highestprice,
-          lowestprice: item.lowestprice,
-          percent: item.percent,
-          platform: item.platform,
-          discountprice: item.discountprice,
-          category: item.category,
-          imageurl: item.imageurl,
-          producturl: item.producturl,
-          mailsent: false,
-        },
-      };
-
-      console.log(yeye);
-
-      Trackproduct(yeye).then((data) => {
-        if (data.error) {
-          console.log(data.error);
-          return;
-        }
-        if (data.success) {
-          console.log(data);
-          // setpro(item.producttitle);
-          setpro([...pro, item.producttitle]);
-
-          // settrakpro(card.producttitle);
-        }
-      });
-
-      console.log("issss auttthhhh");
-    }
-    if (!username) {
-      console.log("Nottttt auttthhhh");
-      navigation.navigate("signin");
-    }
-  };
-
   const item = ({ item }: any) => {
-    const prourlflipkart = item.producturl.replace(/-/g, " ").slice(0, -7);
-    const prourlamazon = item.producturl.replace(/-/g, "+").slice(0, -7);
-    if (item.platform === "Flipkart") {
-      var dynamicurl = `https://www.flipkart.com/search?q=${prourlflipkart}`;
-    }
-    if (item.platform === "Amazon") {
-      var dynamicurl = `https://www.amazon.in/s?k=${prourlamazon}&tag=jatin170f-21`;
-    }
     return (
       <View style={{ marginHorizontal: 8, marginVertical: 6 }}>
         <TouchableOpacity
@@ -308,67 +189,6 @@ function ViewallDealcomponent({
           <Text style={{ fontSize: 14, fontWeight: "900", marginTop: 8 }}>
             {item.producttitle}
           </Text>
-          {/* <View>
-            {pro && (
-              <Button
-                color={"#e32f45"}
-                disabled={
-                  pro.includes(item.producttitle) === true ? true : false
-                }
-                title={
-                  pro.includes(item.producttitle) === true
-                    ? `Tracking`
-                    : `Add to Watchlist`
-                }
-                onPress={() => {
-                  trackpro(item);
-                  // setpro;
-                  // settrakpro(card.producttitle);
-                  // console.log(trakpro);
-                }}
-              />
-            )}
-          </View> */}
-
-          {/* ????????????????NEW>>>>>>>>>>??????????????????? */}
-          {/* <View>
-            <TouchableOpacity
-              style={
-                pro.includes(item.producttitle) === true
-                  ? {
-                      backgroundColor: "grey",
-                      padding: 10,
-                      borderRadius: 10,
-                      marginTop: 10,
-                    }
-                  : {
-                      backgroundColor: "#e32f45",
-                      padding: 10,
-                      borderRadius: 10,
-                      marginTop: 10,
-                    }
-              }
-              disabled={pro.includes(item.producttitle) === true ? true : false}
-              onPress={() => {
-                trackpro(item);
-                // setpro(item.producttitle);
-                // console.log(pro);
-              }}
-            >
-              <Text
-                style={{
-                  color: "white",
-                  textAlign: "center",
-                  fontWeight: "bold",
-                }}
-              >
-                {pro.includes(item.producttitle) === true
-                  ? `Tracking`
-                  : `Add to Watchlist`}
-              </Text>
-            </TouchableOpacity>
-          </View> */}
-          {/* ????????????????NEWEND>>>>>>>>>>??????????????????? */}
         </TouchableOpacity>
       </View>
     );
@@ -383,19 +203,14 @@ function ViewallDealcomponent({
       body: JSON.stringify({
         url: `https://www.pricebefore.com/price-drops/?category=${category}&price-drop=${dealtime}&page=1&more=true`,
       }),
-      // body: JSON.stringify({
-      //   url: `https://www.pricebefore.com/price-drops/?category=laptops&price-drop=${dealtime}&more=true`,
-      // }),
     })
       .then((response) => response.json())
       .then((data) => {
-        if (!data) {
+        if (data.length == 0) {
+          SetTriggerNoProductsAvailable(true);
           SettriggerNextPage(false);
           return null;
         }
-        console.log("4444444444444444444444444444");
-        // console.log(data);
-        console.log("55555555555555555555");
         SettriggerNextPage(true);
         SetExtractedData(data);
       })
@@ -405,7 +220,6 @@ function ViewallDealcomponent({
   };
 
   const GetExtractedDataByPage = () => {
-    console.log(pageNo);
     SetPageNo(pageNo + 1);
     fetch("http://3.110.124.205:8000/111", {
       method: "POST",
@@ -418,25 +232,18 @@ function ViewallDealcomponent({
           pageNo + 1
         }&more=true`,
       }),
-      // body: JSON.stringify({
-      //   url: `https://www.pricebefore.com/price-drops/?category=laptops&price-drop=${dealtime}&more=true`,
-      // }),
     })
       .then((response) => response.json())
       .then((data) => {
+        // console.log(data);
         if (data.length == 0) {
           SettriggerNextPage(false);
           return null;
         }
-        console.log(data.length);
         if (!data) {
-          console.log("isss nulllll");
           SettriggerNextPage(false);
           return null;
         }
-        console.log("4444444444444444444444444444");
-        console.log(data);
-        console.log("55555555555555555555");
         SettriggerNextPage(true);
         SetExtractedData([...extractedData, ...data]);
       })
@@ -458,19 +265,29 @@ function ViewallDealcomponent({
         originalviewalldealtime={originalviewalldealtime}
       />
 
-      {extractedData == 0 ? (
-        <ActivityIndicator
-          style={{ marginTop: 30 }}
-          color="red"
-          size={"large"}
-        />
+      {TriggerNoProductsAvailable ? (
+        <View style={{ height: "100%" }}>
+          <Text
+            style={{ textAlign: "center", marginTop: 100, fontWeight: "bold" }}
+          >
+            No Products Available
+          </Text>
+        </View>
+      ) : extractedData == 0 ? (
+        <View style={{ height: "100%" }}>
+          <ActivityIndicator
+            style={{ marginTop: 30 }}
+            color="red"
+            size={"large"}
+          />
+        </View>
       ) : (
         <FlatList
           data={extractedData}
           renderItem={item}
           keyExtractor={(item, index) => index.toString()}
           onEndReached={triggerNextPage && GetExtractedDataByPage}
-          onEndReachedThreshold={4}
+          onEndReachedThreshold={3}
           ListFooterComponent={triggerNextPage && listfootercomp}
         />
       )}

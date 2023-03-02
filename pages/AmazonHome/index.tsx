@@ -7,9 +7,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { isAuth } from "../../actions/login";
 import Categoryamazfkdropdown from "../../components/categoryamazfkdropdown";
-// import Mobilecomponent from "../../components/mobilecomponent";
 import MobilecomponentNew from "../../components/mobilecomponentNew";
 
 const wait = (timeout) => {
@@ -17,34 +15,17 @@ const wait = (timeout) => {
 };
 
 function AmazonHome({ navigation }) {
-  useEffect(() => {
-    // aut();
-  }, []);
+  useEffect(() => {}, []);
 
   const [refreshing, setRefreshing] = React.useState(false);
-  const [username, setusername] = useState("");
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(500).then(() => setRefreshing(false));
   }, []);
 
-  // const aut = async () => {
-  //   const isaut = await isAuth();
-  //   if (isaut) {
-  //     setusername(isaut.username);
-  //   }
-  // };
-
   const getCurrentDate = () => {
-    // var date = new Date().getDate();
-    // var month = new Date().getMonth() + 1;
-    // var year = new Date().getFullYear();
-
     var time = new Date().toLocaleString();
-
-    //Alert.alert(date + '-' + month + '-' + year);
-    // You can turn it in to your desired format
     return (
       <View>
         <Text
@@ -56,19 +37,10 @@ function AmazonHome({ navigation }) {
           }}
         >
           Last Updated:{"  "}
-          {
-            // date.toString() +
-            //   "-" +
-            //   month.toString() +
-            //   "-" +
-            //   year.toString() +
-            //   "-" +
-            time.toString()
-          }
+          {time.toString()}
         </Text>
       </View>
     );
-    //format: d-m-y;
   };
 
   const CategoryBlock = ({
@@ -119,21 +91,13 @@ function AmazonHome({ navigation }) {
       {refreshing ? (
         <ActivityIndicator size={"large"} color="red" />
       ) : (
-        // <Text>Loading...</Text>
         <ScrollView
           contentContainerStyle={{ flexGrow: 1 }}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
         >
           <Text>
-            {/* <Mobilecomponent
-              platform={Platform}
-              category={CategoryName}
-              navigation={navigation}
-              // username={username}
-            /> */}
             <MobilecomponentNew
-              platform={Platform}
               category={CategoryName}
               navigation={navigation}
               // username={username}
