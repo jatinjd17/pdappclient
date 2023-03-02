@@ -61,6 +61,7 @@ function Categorydropdown({
   ]);
   return (
     <DropDownPicker
+      style={open ? { marginBottom: 200 } : {}}
       open={open}
       value={value}
       items={items}
@@ -83,7 +84,7 @@ function Categorydropdown({
           });
         } else {
           navigation.replace("viewall", {
-            viewalldealtime: dealtimecat,
+            viewalldealtime: originalviewalldealtime,
             category: item.value,
             dealtimecat: dealtimecat,
             originalviewalldealtime: originalviewalldealtime,

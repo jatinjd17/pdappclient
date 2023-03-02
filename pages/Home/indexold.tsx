@@ -10,10 +10,9 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { isAuth } from "../../actions/login";
 import { trackallproductsuser } from "../../actions/trackproduct";
 // import Homepagecomponents from "../../components/homepagecomponents";
-import HomepagecomponentsNew from "../../components/homepagecomponentsNew";
+import Homepagecomponents from "../../components/homepagecomponentsNew";
 import fs from "fs";
 import datajson from "../../jatajson.json";
-import UrlSearchComponent from "../../components/UrlSearchComponent";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -92,41 +91,6 @@ function Home({ navigation }) {
 
   // aut();
 
-  const getCurrentDate = () => {
-    // var date = new Date().getDate();
-    // var month = new Date().getMonth() + 1;
-    // var year = new Date().getFullYear();
-
-    var time = new Date().toLocaleString();
-
-    //Alert.alert(date + '-' + month + '-' + year);
-    // You can turn it in to your desired format
-    return (
-      <View>
-        <Text
-          style={{
-            fontSize: 8,
-            fontWeight: "800",
-            color: "grey",
-            marginLeft: 3,
-          }}
-        >
-          Last Updated:{"  "}
-          {
-            // date.toString() +
-            //   "-" +
-            //   month.toString() +
-            //   "-" +
-            //   year.toString() +
-            //   "-" +
-            time.toString()
-          }
-        </Text>
-      </View>
-    );
-    //format: d-m-y;
-  };
-
   const DealsRowComponentBlock = ({
     DealTitle,
     dealtimeeee,
@@ -146,14 +110,13 @@ function Home({ navigation }) {
           <Text style={{ fontWeight: "bold", fontSize: 21, marginTop: 3 }}>
             {DealTitle}
           </Text>
-          {getCurrentDate()}
         </View>
-        <View style={{ marginTop: 5 }}>
+        <View>
           <TouchableOpacity>
             <Text
               onPress={() =>
                 navigation.navigate("viewall", {
-                  viewalldealtime: dealtimeeee,
+                  viewalldealtime: viewalldealtimeee,
                   category: category,
                   dealtimecat: dealtimecat,
                   originalviewalldealtime: viewalldealtimeee,
@@ -185,7 +148,7 @@ function Home({ navigation }) {
           showsHorizontalScrollIndicator={false}
         >
           <Text>
-            <HomepagecomponentsNew
+            <Homepagecomponents
               dealtime={dealtimeeee}
               navigation={navigation}
             />
@@ -202,25 +165,24 @@ function Home({ navigation }) {
         }
       >
         <View style={{ marginBottom: 95, marginTop: 5 }}>
-          <UrlSearchComponent navigation={navigation} />
           <DealsRowComponentBlock
             DealTitle={"Todays Deals"}
-            dealtimeeee={"todaysDeals"}
-            viewalldealtimeee={"todaysDeals"}
+            dealtimeeee={"todaysdealrandom"}
+            viewalldealtimeee={"todaysdeal"}
             category={""}
             dealtimecat={"todaysdealcat"}
           />
           <DealsRowComponentBlock
             DealTitle={"Weekly Deals"}
-            dealtimeeee={"week"}
-            viewalldealtimeee={"week"}
+            dealtimeeee={"weeklydealrandom"}
+            viewalldealtimeee={"weeklydeal"}
             category={""}
             dealtimecat={"weeklydealcat"}
           />
           <DealsRowComponentBlock
             DealTitle={"Monthly Deals"}
-            dealtimeeee={"month"}
-            viewalldealtimeee={"month"}
+            dealtimeeee={"monthlydealrandom"}
+            viewalldealtimeee={"monthlydeal"}
             category={""}
             dealtimecat={"monthlydealcat"}
           />

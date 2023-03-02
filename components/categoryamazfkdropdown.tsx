@@ -57,6 +57,9 @@ function Categoryamazfkdropdown({ navigation, platform, category, home }) {
 
   return (
     <DropDownPicker
+      // style={{ marginBottom: 210 }}
+      style={open ? { marginBottom: 200 } : {}}
+      // style={{ position: "absolute", zIndex: -100 }}
       open={open}
       value={value}
       items={items}

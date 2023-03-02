@@ -1,70 +1,41 @@
 import React, { useEffect, useState } from "react";
 import {
+  Image,
   View,
   Text,
+  TextInput,
   FlatList,
   TouchableOpacity,
   Linking,
-  Image,
-  ActivityIndicator,
+  TouchableWithoutFeedback,
+  Keyboard,
   Button,
 } from "react-native";
-import { isAuth } from "../actions/login";
-import { trackallproductsuser, Trackproduct } from "../actions/trackproduct";
-import { viewallweeklydealaction } from "../actions/viewall";
-import Categorydropdown from "./categorydropdown";
-import Mobilecard from "./mobilecard";
+import { getSearchdataaction } from "../../actions/search";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { isAuth } from "../../actions/login";
+import { trackallproductsuser, Trackproduct } from "../../actions/trackproduct";
 
-function Viewallamazfkcomponent({ platform, category, navigation }) {
-  const [mobiles, setMobiles]: any = useState([]);
+function Search({ navigation }) {
+  const [query, setquery] = useState("");
+  const [searchdata, setsearchdata] = useState([]);
   const [pro, setpro] = useState([]);
   const [username, setusername] = useState("");
-  const [extractedData, SetExtractedData]: any = useState("");
-  const [pageNo, SetPageNo]: any = useState(1);
   let many = [];
+
+  const clearInput = () => {
+    setquery("");
+    setsearchdata([]);
+  };
 
   useEffect(() => {
     isAuth().then((data) => {
       if (data) {
-        setusername(data.userr);
-        blogs(data.userr);
+        setusername(data.username);
+        blogs(data.username);
       }
     });
-    // Mob();
-    GetExtractedData();
   }, []);
-
-  const Mob = async () => {
-    const all: any = await getallMobiless();
-    if (all) {
-      setMobiles(all);
-    }
-  };
-
-  const getallMobiless = async () => {
-    return viewallweeklydealaction({ platform, category }).then((data) => {
-      if (!data) {
-        return false;
-      } else {
-        console.log(data);
-        return { m: data };
-      }
-    });
-  };
-
-  const getAllMobilesHome = (mobiless: any) => {
-    if (mobiless != null) {
-      return mobiless.map((b: any, i: any) => {
-        return (
-          <View key={i}>
-            <Mobilecard card={b} />
-          </View>
-        );
-      });
-    } else {
-      return null;
-    }
-  };
 
   const blogs = async (username) => {
     const all: any = await allBlogs(username);
@@ -131,55 +102,18 @@ function Viewallamazfkcomponent({ platform, category, navigation }) {
   };
 
   const item = ({ item }: any) => {
-    const prourlflipkart = item.producturl.replace(/-/g, " ").slice(0, -7);
-    const prourlamazon = item.producturl.replace(/-/g, "+").slice(0, -7);
-    if (item.platform === "Flipkart") {
-      var dynamicurl = `https://www.flipkart.com/search?q=${prourlflipkart}`;
-    }
-    if (item.platform === "Amazon") {
-      var dynamicurl = `https://www.amazon.in/s?k=${prourlamazon}&tag=jatin170f-21`;
-    }
+    const prourl = item.producturl.replace(/-/g, " ").slice(0, -7);
     return (
-      <View
-        style={{
-          marginHorizontal: 10,
-          marginVertical: 5,
-        }}
-      >
+      <View style={{ marginHorizontal: 6 }}>
         <TouchableOpacity
           onPress={() =>
-            // Linking.openURL(dynamicurl)
-            navigation.navigate("specificproductpage", {
-              product: item.producttitle,
-              price: item.finalprice,
-              highestprice: item.highestprice,
-              lowestprice: item.lowestprice,
-              percent: item.percent,
-              platform: item.platform,
-              discountprice: item.discountprice,
-              category: item.category,
-              imageurl: item.imageurl,
-              producturl: item.producturl,
-              features: item.features,
-              // viewalldealtime: dealtimeeee,
-              // category: category,
-              // dealtimecat: dealtimecat,
-              // originalviewalldealtime: viewalldealtimeee,
-            })
+            Linking.openURL(`https://www.flipkart.com/search?q=${prourl}`)
           }
           style={{
             backgroundColor: "white",
             marginVertical: 2,
             borderRadius: 15,
             padding: 10,
-            shadowColor: "black",
-            shadowOffset: {
-              width: 0,
-              height: 10,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.5,
-            elevation: 6,
           }}
         >
           <View
@@ -195,14 +129,14 @@ function Viewallamazfkcomponent({ platform, category, navigation }) {
                 {item.platform === "Amazon" && (
                   <Image
                     style={{ height: 20, width: 20 }}
-                    source={require("../assets/icons/amazon.png")}
+                    source={require("../../assets/icons/amazon.png")}
                   />
                 )}
 
                 {item.platform === "Flipkart" && (
                   <Image
                     style={{ height: 20, width: 20 }}
-                    source={require("../assets/icons/fk.png")}
+                    source={require("../../assets/icons/fk.png")}
                   />
                 )}
               </View>
@@ -212,7 +146,7 @@ function Viewallamazfkcomponent({ platform, category, navigation }) {
                   marginRight: 6,
                   width: 150,
                   height: 120,
-                  // borderRadius: 15,
+                  borderRadius: 15,
                   resizeMode: "contain",
                 }}
                 source={{
@@ -290,7 +224,7 @@ function Viewallamazfkcomponent({ platform, category, navigation }) {
                     color: "red",
                     fontWeight: "600",
                     fontSize: 12,
-                    marginTop: 8,
+                    paddingTop: 8,
                   }}
                 >
                   Highest Price:
@@ -327,8 +261,7 @@ function Viewallamazfkcomponent({ platform, category, navigation }) {
               />
             )}
           </View> */}
-          {/* ?????????????????NEW>>>>>>>>>???????????????? */}
-          {/* <View>
+          <View>
             <TouchableOpacity
               style={
                 pro.includes(item.producttitle) === true
@@ -364,108 +297,94 @@ function Viewallamazfkcomponent({ platform, category, navigation }) {
                   : `Add to Watchlist`}
               </Text>
             </TouchableOpacity>
-          </View> */}
-          {/* ?????????????????NEWEnd>>>>>>>>>???????????????? */}
+          </View>
         </TouchableOpacity>
       </View>
     );
   };
 
-  const GetExtractedData = () => {
-    fetch("http://3.110.124.205:8000/111", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        // url: `https://www.pricebefore.com/price-drops/?category=${category}&page=1&more=true`,
-        url: `https://www.pricebefore.com/${category}/?page=1&more=true`,
-      }),
-      // body: JSON.stringify({
-      //   url: `https://www.pricebefore.com/price-drops/?category=laptops&price-drop=${dealtime}&more=true`,
-      // }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (!data) {
-          return null;
-        }
-        console.log("4444444444444444444444444444");
-        console.log(data);
-        console.log("55555555555555555555");
-        SetExtractedData(data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
-
-  const GetExtractedDataByPage = () => {
-    console.log(pageNo);
-    SetPageNo(pageNo + 1);
-    fetch("http://3.110.124.205:8000/111", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        url: `https://www.pricebefore.com/${category}/?page=${
-          pageNo + 1
-        }&more=true`,
-      }),
-      // body: JSON.stringify({
-      //   url: `https://www.pricebefore.com/price-drops/?category=laptops&price-drop=${dealtime}&more=true`,
-      // }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (!data) {
-          return null;
-        }
-        console.log("4444444444444444444444444444");
-        console.log(data);
-        console.log("55555555555555555555");
-        SetExtractedData([...extractedData, ...data]);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
-
-  const listfootercomp = () => {
-    return <ActivityIndicator size={"large"} />;
-  };
-
   return (
-    <View style={{ marginBottom: 190 }}>
-      {extractedData == 0 ? (
-        <ActivityIndicator
-          style={{ marginTop: 30 }}
-          color="red"
-          size={"large"}
-        />
-      ) : (
+    <View style={{ marginBottom: 140 }}>
+      <View
+        style={{
+          flexDirection: "row",
+
+          width: "100%",
+        }}
+      >
+        <View style={{ flex: 1 }}>
+          <TextInput
+            style={{
+              backgroundColor: "white",
+              padding: 7,
+              paddingVertical: 9,
+              borderRadius: 10,
+              marginLeft: 9,
+              borderColor: "red",
+              borderWidth: 1,
+            }}
+            value={query}
+            placeholder="Search Deals"
+            placeholderTextColor={"red"}
+            onChangeText={(text) => {
+              setquery(text);
+              console.log(query);
+              if (!text) {
+                setsearchdata([]);
+              }
+              if (text) {
+                getSearchdataaction(text)
+                  .then((data) => {
+                    setsearchdata(data);
+                  })
+                  .catch((e) => {
+                    console.log(e);
+                  });
+              }
+            }}
+          />
+        </View>
+        <View
+          style={{
+            alignSelf: "center",
+            marginRight: 8,
+          }}
+        >
+          {query.length === 0 ? (
+            <View
+              style={{
+                padding: 17,
+                backgroundColor: "red",
+                borderRadius: 10,
+              }}
+            >
+              <FontAwesome name="search" color="white" />
+            </View>
+          ) : (
+            <TouchableOpacity onPress={clearInput}>
+              <View
+                style={{
+                  padding: 17,
+                  backgroundColor: "red",
+                  borderRadius: 10,
+                }}
+              >
+                <FontAwesome name="times" color="white" />
+              </View>
+            </TouchableOpacity>
+          )}
+        </View>
+      </View>
+
+      <TouchableWithoutFeedback onPressIn={Keyboard.dismiss} accessible={true}>
         <FlatList
-          // ListHeaderComponent={() => (
-          //   <Categorydropdown
-          //     navigation={navigation}
-          //     platform={platform}
-          //     category={category}
-          //     home={false}
-          //   />
-          // )}
-          data={extractedData}
+          data={searchdata}
           renderItem={item}
           keyExtractor={(item, index) => index.toString()}
-          onEndReached={GetExtractedDataByPage}
-          onEndReachedThreshold={4}
-          ListFooterComponent={listfootercomp}
         />
-      )}
+      </TouchableWithoutFeedback>
     </View>
   );
 }
 
-export default Viewallamazfkcomponent;
+export default Search;

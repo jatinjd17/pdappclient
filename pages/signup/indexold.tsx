@@ -38,67 +38,26 @@ function Signup({ navigation }) {
     formdata.append("email", data.email);
     formdata.append("password", data.password);
     formdata.append("photo", data.photo);
-
-    fetch("http://3.110.124.205:8000/555", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-      // body: JSON.stringify({
-      //   url: `https://www.pricebefore.com/price-drops/?category=laptops&price-drop=${dealtime}&more=true`,
-      // }),
-    })
-      .then((response) =>
-        // console.log(response);
-        response.json()
-      )
+    SignUp(data)
       .then((data) => {
-        if (!data) {
-          return null;
-        }
+        console.log(data);
         if (data.error) {
-          console.log(data.error);
           setValues({ ...values, loading: false, error: data.error });
-          return null;
+          console.log(data.error);
+
+          return;
         }
+        console.log(data);
         setValues({
           ...values,
           loading: false,
-          message: data.success,
+          message: data.message,
           error: "",
         });
-        console.log("8888888888888888888888888888888");
-        console.log(data);
-        console.log("999999999999999999999999999999");
-        // SetExtractedData(data);
       })
       .catch((e) => {
-        // console.log(e);
         setValues({ ...values, loading: false, error: data.error });
       });
-
-    // SignUp(data)
-    //   .then((data) => {
-    //     console.log(data);
-    //     if (data.error) {
-    //       setValues({ ...values, loading: false, error: data.error });
-    //       console.log(data.error);
-
-    //       return;
-    //     }
-    //     console.log(data);
-    //     setValues({
-    //       ...values,
-    //       loading: false,
-    //       message: data.message,
-    //       error: "",
-    //     });
-    //   })
-    //   .catch((e) => {
-    //     setValues({ ...values, loading: false, error: data.error });
-    //   });
   };
 
   return (
@@ -114,11 +73,11 @@ function Signup({ navigation }) {
           <Text style={styles.subTxt}>Signup</Text>
           <Controller
             control={control}
-            name="username"
+            name="name"
             render={({ field: { onChange, value, onBlur } }) => (
               <TextInput
                 style={styles.nameInput}
-                placeholder="Enter your username here"
+                placeholder="Enter your name here"
                 value={value}
                 onBlur={onBlur}
                 onChangeText={(value) => onChange(value)}
@@ -135,13 +94,13 @@ function Signup({ navigation }) {
               },
             }}
           />
-          {errors?.username ? (
+          {errors?.name ? (
             <Text style={{ marginLeft: 40, color: "red" }}>
-              {errors?.username && errors.username.message}
+              {errors?.name && errors.name.message}
             </Text>
           ) : null}
           {/* <TextInput style={styles.nameInput} placeholder="Username" /> */}
-          {/* /////////////////////////NEW????????????????????? */}
+
           <Controller
             control={control}
             name="email"
@@ -177,9 +136,6 @@ function Signup({ navigation }) {
               {errors?.email && errors.email.message}
             </Text>
           ) : null}
-
-          {/* /////////////////////////END????????????????????? */}
-
           {/* <TextInput
           style={styles.nameInput}
           placeholder="Email"

@@ -1,7 +1,7 @@
 import React from "react";
 import { Linking, TouchableOpacity, View, Image, Text } from "react-native";
 
-function Viewallcard({ card }) {
+function Viewallcard({ card, navigation }) {
   const prourlflipkart = card.producturl.replace(/-/g, " ").slice(0, -7);
   const prourlamazon = card.producturl.replace(/-/g, "+").slice(0, -7);
   if (card.platform === "Flipkart") {
@@ -13,7 +13,28 @@ function Viewallcard({ card }) {
 
   return (
     <View style={{}}>
-      <TouchableOpacity onPress={() => Linking.openURL(dynamicurl)}>
+      <TouchableOpacity
+        onPress={() =>
+          // Linking.openURL(dynamicurl)
+          navigation.navigate("specificproductpage", {
+            product: card.producttitle,
+            price: card.finalprice,
+            highestprice: card.highestprice,
+            lowestprice: card.lowestprice,
+            percent: card.percent,
+            platform: card.platform,
+            discountprice: card.discountprice,
+            category: card.category,
+            imageurl: card.imageurl,
+            producturl: card.producturl,
+            features: card.features,
+            // viewalldealtime: dealtimeeee,
+            // category: category,
+            // dealtimecat: dealtimecat,
+            // originalviewalldealtime: viewalldealtimeee,
+          })
+        }
+      >
         <View
           style={{
             alignItems: "center",

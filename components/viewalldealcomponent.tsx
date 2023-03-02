@@ -25,16 +25,20 @@ function ViewallDealcomponent({
   const [mobiles, setMobiles]: any = useState([]);
   const [pro, setpro] = useState([]);
   const [username, setusername] = useState("");
+  const [extractedData, SetExtractedData]: any = useState("");
+  const [pageNo, SetPageNo]: any = useState(1);
+  const [triggerNextPage, SettriggerNextPage]: any = useState(false);
   let many = [];
 
   useEffect(() => {
     isAuth().then((data) => {
       if (data) {
-        setusername(data.username);
-        blogs(data.username);
+        setusername(data.userr);
+        blogs(data.userr);
       }
     });
-    Mob();
+    // Mob();
+    GetExtractedData();
   }, []);
 
   const Mob = async () => {
@@ -143,14 +147,41 @@ function ViewallDealcomponent({
       var dynamicurl = `https://www.amazon.in/s?k=${prourlamazon}&tag=jatin170f-21`;
     }
     return (
-      <View style={{ marginHorizontal: 6 }}>
+      <View style={{ marginHorizontal: 8, marginVertical: 6 }}>
         <TouchableOpacity
-          onPress={() => Linking.openURL(dynamicurl)}
+          onPress={() =>
+            // Linking.openURL(dynamicurl)
+            navigation.navigate("specificproductpage", {
+              product: item.producttitle,
+              price: item.finalprice,
+              highestprice: item.highestprice,
+              lowestprice: item.lowestprice,
+              percent: item.percent,
+              platform: item.platform,
+              discountprice: item.discountprice,
+              category: item.category,
+              imageurl: item.imageurl,
+              producturl: item.producturl,
+              features: item.features,
+              // viewalldealtime: dealtimeeee,
+              // category: category,
+              // dealtimecat: dealtimecat,
+              // originalviewalldealtime: viewalldealtimeee,
+            })
+          }
           style={{
             backgroundColor: "white",
             marginVertical: 2,
             borderRadius: 15,
             padding: 10,
+            shadowColor: "black",
+            shadowOffset: {
+              width: 0,
+              height: 10,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.5,
+            elevation: 5,
           }}
         >
           <View
@@ -298,7 +329,9 @@ function ViewallDealcomponent({
               />
             )}
           </View> */}
-          <View>
+
+          {/* ????????????????NEW>>>>>>>>>>??????????????????? */}
+          {/* <View>
             <TouchableOpacity
               style={
                 pro.includes(item.producttitle) === true
@@ -334,10 +367,86 @@ function ViewallDealcomponent({
                   : `Add to Watchlist`}
               </Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
+          {/* ????????????????NEWEND>>>>>>>>>>??????????????????? */}
         </TouchableOpacity>
       </View>
     );
+  };
+  const GetExtractedData = () => {
+    fetch("http://3.110.124.205:8000/111", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        url: `https://www.pricebefore.com/price-drops/?category=${category}&price-drop=${dealtime}&page=1&more=true`,
+      }),
+      // body: JSON.stringify({
+      //   url: `https://www.pricebefore.com/price-drops/?category=laptops&price-drop=${dealtime}&more=true`,
+      // }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (!data) {
+          SettriggerNextPage(false);
+          return null;
+        }
+        console.log("4444444444444444444444444444");
+        // console.log(data);
+        console.log("55555555555555555555");
+        SettriggerNextPage(true);
+        SetExtractedData(data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const GetExtractedDataByPage = () => {
+    console.log(pageNo);
+    SetPageNo(pageNo + 1);
+    fetch("http://3.110.124.205:8000/111", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        url: `https://www.pricebefore.com/price-drops/?category=${category}&price-drop=${dealtime}&page=${
+          pageNo + 1
+        }&more=true`,
+      }),
+      // body: JSON.stringify({
+      //   url: `https://www.pricebefore.com/price-drops/?category=laptops&price-drop=${dealtime}&more=true`,
+      // }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.length == 0) {
+          SettriggerNextPage(false);
+          return null;
+        }
+        console.log(data.length);
+        if (!data) {
+          console.log("isss nulllll");
+          SettriggerNextPage(false);
+          return null;
+        }
+        console.log("4444444444444444444444444444");
+        console.log(data);
+        console.log("55555555555555555555");
+        SettriggerNextPage(true);
+        SetExtractedData([...extractedData, ...data]);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const listfootercomp = () => {
+    return <ActivityIndicator size={"large"} />;
   };
 
   return (
@@ -349,7 +458,7 @@ function ViewallDealcomponent({
         originalviewalldealtime={originalviewalldealtime}
       />
 
-      {mobiles == 0 ? (
+      {extractedData == 0 ? (
         <ActivityIndicator
           style={{ marginTop: 30 }}
           color="red"
@@ -357,9 +466,12 @@ function ViewallDealcomponent({
         />
       ) : (
         <FlatList
-          data={mobiles.m}
+          data={extractedData}
           renderItem={item}
           keyExtractor={(item, index) => index.toString()}
+          onEndReached={triggerNextPage && GetExtractedDataByPage}
+          onEndReachedThreshold={4}
+          ListFooterComponent={triggerNextPage && listfootercomp}
         />
       )}
     </View>

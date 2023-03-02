@@ -5,10 +5,11 @@ import { getallmobiles } from "../actions/mobiles";
 import { trackallproductsuser } from "../actions/trackproduct";
 import Mobilecard from "./mobilecard";
 
-function Mobilecomponent({ platform, category, navigation }) {
+function MobilecomponentNew({ platform, category, navigation }) {
   const [mobiles, setMobiles]: any = useState([]);
   const [pro, setpro] = useState([]);
   const [username, setusername] = useState("");
+  const [extractedData, SetExtractedData]: any = useState("");
   let many = [];
 
   useEffect(() => {
@@ -18,7 +19,8 @@ function Mobilecomponent({ platform, category, navigation }) {
         blogs(data.userr);
       }
     });
-    Mob();
+    // Mob();
+    GetExtractedData();
   }, []);
 
   const Mob = async () => {
@@ -39,9 +41,9 @@ function Mobilecomponent({ platform, category, navigation }) {
     });
   };
 
-  const getAllMobilesHome = (mobiless: any) => {
-    if (mobiless != null) {
-      return mobiless.map((b: any, i: any) => {
+  const getAllMobilesHome = (extractedData: any) => {
+    if (extractedData != null) {
+      return extractedData.map((b: any, i: any) => {
         return (
           <View key={i}>
             <Mobilecard
@@ -79,9 +81,38 @@ function Mobilecomponent({ platform, category, navigation }) {
     });
   };
 
+  const GetExtractedData = () => {
+    fetch("http://3.110.124.205:8000/111", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        url: `https://www.pricebefore.com/price-drops/?category=${category}&more=true`,
+      }),
+      // body: JSON.stringify({
+      //   url: `https://www.pricebefore.com/price-drops/?category=laptops&price-drop=${dealtime}&more=true`,
+      // }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (!data) {
+          return null;
+        }
+        console.log("4444444444444444444444444444");
+        console.log(data);
+        console.log("55555555555555555555");
+        SetExtractedData(data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
   return (
     <View>
-      {mobiles == 0 ? (
+      {extractedData == 0 ? (
         <ActivityIndicator
           style={{ marginLeft: 170 }}
           color="red"
@@ -93,11 +124,11 @@ function Mobilecomponent({ platform, category, navigation }) {
           horizontal={true}
           showsHorizontalScrollIndicator={false}
         >
-          {getAllMobilesHome(mobiles.m)}
+          {getAllMobilesHome(extractedData)}
         </ScrollView>
       )}
     </View>
   );
 }
 
-export default Mobilecomponent;
+export default MobilecomponentNew;

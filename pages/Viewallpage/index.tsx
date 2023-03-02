@@ -9,7 +9,7 @@ function ViewAll({ route, navigation }) {
   console.log(viewalldealtime);
 
   return (
-    <View>
+    <View style={{ backgroundColor: "#FFF9F9" }}>
       <ViewallDealcomponent
         dealtime={viewalldealtime}
         category={category}

@@ -9,7 +9,8 @@ import {
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { isAuth } from "../../actions/login";
 import Categoryamazfkdropdown from "../../components/categoryamazfkdropdown";
-import Mobilecomponent from "../../components/mobilecomponent";
+// import Mobilecomponent from "../../components/mobilecomponent";
+import MobilecomponentNew from "../../components/mobilecomponentNew";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -35,6 +36,41 @@ function AmazonHome({ navigation }) {
   //   }
   // };
 
+  const getCurrentDate = () => {
+    // var date = new Date().getDate();
+    // var month = new Date().getMonth() + 1;
+    // var year = new Date().getFullYear();
+
+    var time = new Date().toLocaleString();
+
+    //Alert.alert(date + '-' + month + '-' + year);
+    // You can turn it in to your desired format
+    return (
+      <View>
+        <Text
+          style={{
+            fontSize: 8,
+            fontWeight: "800",
+            color: "grey",
+            marginLeft: 3,
+          }}
+        >
+          Last Updated:{"  "}
+          {
+            // date.toString() +
+            //   "-" +
+            //   month.toString() +
+            //   "-" +
+            //   year.toString() +
+            //   "-" +
+            time.toString()
+          }
+        </Text>
+      </View>
+    );
+    //format: d-m-y;
+  };
+
   const CategoryBlock = ({
     categoryTitle,
     Platform,
@@ -53,8 +89,9 @@ function AmazonHome({ navigation }) {
           <Text style={{ fontWeight: "bold", fontSize: 20, marginTop: 3 }}>
             {categoryTitle}
           </Text>
+          {getCurrentDate()}
         </View>
-        <View>
+        <View style={{ marginTop: 5 }}>
           <TouchableOpacity>
             <Text
               onPress={() =>
@@ -89,7 +126,13 @@ function AmazonHome({ navigation }) {
           showsHorizontalScrollIndicator={false}
         >
           <Text>
-            <Mobilecomponent
+            {/* <Mobilecomponent
+              platform={Platform}
+              category={CategoryName}
+              navigation={navigation}
+              // username={username}
+            /> */}
+            <MobilecomponentNew
               platform={Platform}
               category={CategoryName}
               navigation={navigation}
@@ -102,12 +145,14 @@ function AmazonHome({ navigation }) {
   );
   return (
     <View style={{ backgroundColor: "#F3F9FD" }}>
-      <Categoryamazfkdropdown
-        navigation={navigation}
-        platform={"amazon"}
-        category={""}
-        home={true}
-      />
+      <View>
+        <Categoryamazfkdropdown
+          navigation={navigation}
+          platform={"amazon"}
+          category={""}
+          home={true}
+        />
+      </View>
       <ScrollView
         horizontal={false}
         refreshControl={
@@ -134,9 +179,9 @@ function AmazonHome({ navigation }) {
             // username={username}
           />
           <CategoryBlock
-            categoryTitle={"Cameras"}
+            categoryTitle={"Laptops"}
             Platform={"amazon"}
-            CategoryName={"cameras"}
+            CategoryName={"laptops"}
             // username={username}
           />
         </View>

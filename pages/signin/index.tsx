@@ -39,25 +39,47 @@ function Signin({ navigation }) {
     formdata.append("email", data.email);
     formdata.append("password", data.password);
     console.log(data);
-    SignIn(data)
+    fetch("http://3.110.124.205:8000/444", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+      // body: JSON.stringify({
+      //   url: `https://www.pricebefore.com/price-drops/?category=laptops&price-drop=${dealtime}&more=true`,
+      // }),
+    })
+      .then((response) =>
+        // console.log(response);
+        response.json()
+      )
       .then((data) => {
-        // console.log(data);
+        if (!data) {
+          return null;
+        }
         if (data.error) {
-          setValues({ ...values, loading: false, error: data.error });
           console.log(data.error);
-
-          return;
+          setValues({ ...values, loading: false, error: data.error });
+          return null;
         }
         setValues({
           ...values,
           loading: false,
-          message: "Sign In Successfully",
+          message: data.success,
           error: "",
         });
+        console.log("8888888888888888888888888888888");
+        console.log(data);
+        console.log("999999999999999999999999999999");
+
         authenticate(data, async () => {
+          console.log("isauthenticateeeeeeeeeeeeee");
+
           const isaut = await isAuth();
           if (isaut) {
             console.log(isaut);
+            console.log("iiissssssssauthhhh");
             navigation.replace("settings");
             ///////////////////////
             // navigation.reset({
@@ -85,11 +107,63 @@ function Signin({ navigation }) {
             console.log("issss auttthhhh");
           }
         });
-        // console.log(data);
+        // SetExtractedData(data);
       })
       .catch((e) => {
+        // console.log(e);
         setValues({ ...values, loading: false, error: data.error });
       });
+    // SignIn(data)
+    //   .then((data) => {
+    //     // console.log(data);
+    //     if (data.error) {
+    //       setValues({ ...values, loading: false, error: data.error });
+    //       console.log(data.error);
+
+    //       return;
+    //     }
+    //     setValues({
+    //       ...values,
+    //       loading: false,
+    //       message: "Sign In Successfully",
+    //       error: "",
+    //     });
+    //     authenticate(data, async () => {
+    //       const isaut = await isAuth();
+    //       if (isaut) {
+    //         console.log(isaut);
+    //         navigation.replace("settings");
+    //         ///////////////////////
+    //         // navigation.reset({
+    //         //   index: 0,
+    //         //   routes: [{ name: "nnn" }],
+    //         // });
+    //         //////////////////////////////////////////
+    //         // navigation.replace("nnn", {
+    //         //   params: { name: "ford" },
+    //         // });
+    //         // navigation.navigate("Home");
+    //         // console.log(JSON.parse(isAuth()));
+    //         // let isauth:any = isAuth();
+    //         // console.log(JSON.parse(isauth));
+    //         ////////////New//////////////
+    //         // Router.push(`/Blog/profile/${isAuth().name}`);
+    //         /////////////////////////////
+    //         // Router.push("/");
+
+    //         // const nnnn = await isAuth();
+    //         // console.log(nnnn);
+
+    //         // console.log(isAuth());
+
+    //         console.log("issss auttthhhh");
+    //       }
+    //     });
+    //     // console.log(data);
+    //   })
+    //   .catch((e) => {
+    //     setValues({ ...values, loading: false, error: data.error });
+    //   });
   };
 
   return (

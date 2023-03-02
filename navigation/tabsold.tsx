@@ -55,7 +55,7 @@ const Tabs = () => {
         name="viewall123"
         component={HomeStackNavigator}
         options={{
-          unmountOnBlur: false,
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => (
             <View
               style={{
@@ -68,8 +68,8 @@ const Tabs = () => {
                 source={require("../assets/icons/home.png")}
                 resizeMode="contain"
                 style={{
-                  width: 37,
-                  height: 37,
+                  width: 25,
+                  height: 25,
                   //   tintColor: "#e32f95",
                   tintColor: focused ? "#e32f45" : "#748c94",
                 }}
@@ -83,11 +83,11 @@ const Tabs = () => {
           ),
         }}
       />
-      {/* <Tab.Screen
+      <Tab.Screen
         name="Flipkart"
         component={FlipkartStackNavigator}
         options={{
-          unmountOnBlur: false,
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => (
             <View
               style={{
@@ -114,13 +114,32 @@ const Tabs = () => {
             </View>
           ),
         }}
-      /> */}
-
+      />
+      <Tab.Screen
+        name="Sear"
+        component={SearchStackNavigator}
+        options={{
+          unmountOnBlur: true,
+          tabBarIcon: ({ focused }) => (
+            <Image
+              source={require("../assets/icons/search.png")}
+              resizeMode="contain"
+              style={{
+                width: 30,
+                height: 30,
+                //   tintColor: "#e32f95",
+                tintColor: "#fff",
+              }}
+            />
+          ),
+          tabBarButton: (props) => <CustomTabBarButton {...props} />,
+        }}
+      />
       <Tab.Screen
         name="Amazon"
         component={AmazonStackNavigator}
         options={{
-          unmountOnBlur: false,
+          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => (
             <View
               style={{
@@ -129,63 +148,23 @@ const Tabs = () => {
                 top: 5,
               }}
             >
-              <View style={{ flexDirection: "row" }}>
-                <Image
-                  source={require("../assets/icons/fk2.png")}
-                  resizeMode="contain"
-                  style={{
-                    width: 25,
-                    height: 25,
-                    //   tintColor: "#e32f95",
-                    tintColor: focused ? "#e32f45" : "#748c94",
-                  }}
-                />
-                <Image
-                  source={require("../assets/icons/amazon.png")}
-                  resizeMode="contain"
-                  style={{
-                    width: 25,
-                    height: 25,
-                    //   tintColor: "#e32f95",
-                    tintColor: focused ? "#e32f45" : "#748c94",
-                  }}
-                />
-              </View>
-              <Text
-                style={{ color: focused ? "#e32f45" : "#748c94", fontSize: 12 }}
-              >
-                Flipkart/Amazon
-              </Text>
-            </View>
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Sear"
-        component={SearchStackNavigator}
-        options={{
-          unmountOnBlur: false,
-          tabBarIcon: ({ focused }) => (
-            <View>
               <Image
-                source={require("../assets/icons/search.png")}
+                source={require("../assets/icons/amazon.png")}
                 resizeMode="contain"
                 style={{
-                  width: 36,
-                  height: 36,
+                  width: 25,
+                  height: 25,
                   //   tintColor: "#e32f95",
                   tintColor: focused ? "#e32f45" : "#748c94",
-                  marginTop: 10,
                 }}
               />
               <Text
                 style={{ color: focused ? "#e32f45" : "#748c94", fontSize: 12 }}
               >
-                Search
+                Amazon
               </Text>
             </View>
           ),
-          // tabBarButton: (props) => <CustomTabBarButton {...props} />,
         }}
       />
       <Tab.Screen

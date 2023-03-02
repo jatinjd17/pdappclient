@@ -6,18 +6,21 @@ import Viewallamazfkcomponent from "../../components/viewallamazfkcomponent";
 function ViewAllAmazFk({ route, navigation }) {
   const { platform, category } = route.params;
   return (
-    <View>
+    <View style={{ backgroundColor: "#F3F7FD" }}>
       <Categoryamazfkdropdown
         navigation={navigation}
         platform={platform}
         category={category}
         home={false}
       />
-      <Viewallamazfkcomponent
-        platform={platform}
-        category={category}
-        navigation={navigation}
-      />
+
+      <View>
+        <Viewallamazfkcomponent
+          platform={platform}
+          category={category}
+          navigation={navigation}
+        />
+      </View>
     </View>
   );
 }

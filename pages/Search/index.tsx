@@ -10,6 +10,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Button,
+  ActivityIndicator,
 } from "react-native";
 import { getSearchdataaction } from "../../actions/search";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -17,10 +18,13 @@ import { isAuth } from "../../actions/login";
 import { trackallproductsuser, Trackproduct } from "../../actions/trackproduct";
 
 function Search({ navigation }) {
-  const [query, setquery] = useState("");
+  const [query, setquery]: any = useState("");
   const [searchdata, setsearchdata] = useState([]);
   const [pro, setpro] = useState([]);
   const [username, setusername] = useState("");
+  const [extractedData, SetExtractedData]: any = useState("");
+  const [pageNo, SetPageNo]: any = useState(1);
+  const [triggerNextPage, SettriggerNextPage]: any = useState(false);
   let many = [];
 
   const clearInput = () => {
@@ -31,8 +35,8 @@ function Search({ navigation }) {
   useEffect(() => {
     isAuth().then((data) => {
       if (data) {
-        setusername(data.username);
-        blogs(data.username);
+        setusername(data.userr);
+        blogs(data.userr);
       }
     });
   }, []);
@@ -104,16 +108,41 @@ function Search({ navigation }) {
   const item = ({ item }: any) => {
     const prourl = item.producturl.replace(/-/g, " ").slice(0, -7);
     return (
-      <View style={{ marginHorizontal: 6 }}>
+      <View style={{ marginHorizontal: 8, marginVertical: 6 }}>
         <TouchableOpacity
-          onPress={() =>
-            Linking.openURL(`https://www.flipkart.com/search?q=${prourl}`)
+          onPress={
+            () =>
+              navigation.navigate("specificproductpage", {
+                product: item.producttitle,
+                price: item.finalprice,
+                // highestprice: item.highestprice,
+                // lowestprice: item.lowestprice,
+                percent: item.percent,
+                platform: item.platform,
+                discountprice: item.discountprice,
+                category: item.category,
+                imageurl: item.imageurl,
+                producturl: item.producturl,
+                // viewalldealtime: dealtimeeee,
+                // category: category,
+                // dealtimecat: dealtimecat,
+                // originalviewalldealtime: viewalldealtimeee,
+              })
+            // Linking.openURL(`https://www.flipkart.com/search?q=${prourl}`)
           }
           style={{
             backgroundColor: "white",
             marginVertical: 2,
             borderRadius: 15,
             padding: 10,
+            shadowColor: "black",
+            shadowOffset: {
+              width: 0,
+              height: 10,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.5,
+            elevation: 5,
           }}
         >
           <View
@@ -159,7 +188,7 @@ function Search({ navigation }) {
                 width: "50%",
                 flex: 1,
                 alignItems: "center",
-                marginTop: 10,
+                marginTop: 40,
               }}
             >
               <View style={{ flex: 1, flexDirection: "row" }}>
@@ -167,11 +196,11 @@ function Search({ navigation }) {
                   <Text
                     style={{
                       fontWeight: "900",
-                      fontSize: 20,
+                      fontSize: 22,
                       color: "green",
                     }}
                   >
-                    {"\u20B9"}
+                    {/* {"\u20B9"} */}
                     {item.finalprice}
                   </Text>
                   <Text
@@ -187,15 +216,15 @@ function Search({ navigation }) {
                     {item.discountprice}
                   </Text>
                 </View>
-                <View style={{ alignItems: "flex-end" }}>
-                  <Text style={{ fontWeight: "900", fontSize: 16 }}>
+                <View style={{ alignItems: "flex-end", marginLeft: -10 }}>
+                  <Text style={{ fontWeight: "900", fontSize: 10 }}>
                     {"  "}
-                    {item.percent}% Off
+                    {item.percent}
                   </Text>
                 </View>
               </View>
 
-              <View
+              {/* <View
                 style={{
                   borderWidth: 1,
                   padding: 6,
@@ -233,7 +262,7 @@ function Search({ navigation }) {
                     {item.highestprice}
                   </Text>
                 </Text>
-              </View>
+              </View> */}
             </View>
           </View>
 
@@ -261,7 +290,8 @@ function Search({ navigation }) {
               />
             )}
           </View> */}
-          <View>
+          {/* ?????????????????NEW>>>>>>>>>???????????????? */}
+          {/* <View>
             <TouchableOpacity
               style={
                 pro.includes(item.producttitle) === true
@@ -297,10 +327,87 @@ function Search({ navigation }) {
                   : `Add to Watchlist`}
               </Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
+          {/* ?????????????????NEWEnd>>>>>>>>>???????????????? */}
         </TouchableOpacity>
       </View>
     );
+  };
+
+  const GetExtractedData = (text) => {
+    fetch("http://3.110.124.205:8000/333", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        url: `https://www.pricebefore.com/search/?q=${text}&page=1`,
+      }),
+      // body: JSON.stringify({
+      //   url: `https://www.pricebefore.com/price-drops/?category=laptops&price-drop=${dealtime}&more=true`,
+      // }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.length == 0) {
+          SettriggerNextPage(false);
+          return null;
+        }
+        if (!data) {
+          SettriggerNextPage(false);
+          return null;
+        }
+        console.log("4444444444444444444444444444");
+        console.log(data);
+        console.log("55555555555555555555");
+        SettriggerNextPage(true);
+        SetExtractedData(data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const GetExtractedDataByPage = (text) => {
+    console.log(pageNo);
+    SetPageNo(pageNo + 1);
+    fetch("http://3.110.124.205:8000/333", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        url: `https://www.pricebefore.com/search/?q=${text}&page=${pageNo + 1}`,
+      }),
+      // body: JSON.stringify({
+      //   url: `https://www.pricebefore.com/price-drops/?category=laptops&price-drop=${dealtime}&more=true`,
+      // }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.length == 0) {
+          SettriggerNextPage(false);
+          return null;
+        }
+        if (!data) {
+          SettriggerNextPage(false);
+          return null;
+        }
+        console.log("4444444444444444444444444444");
+        console.log(data);
+        console.log("55555555555555555555");
+        SettriggerNextPage(true);
+        SetExtractedData([...extractedData, ...data]);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const listfootercomp = () => {
+    return <ActivityIndicator size={"large"} />;
   };
 
   return (
@@ -308,23 +415,30 @@ function Search({ navigation }) {
       <View
         style={{
           flexDirection: "row",
-
-          width: "100%",
+          backgroundColor: "white",
+          // width: "100%",
+          marginTop: 10,
+          borderRadius: 10,
+          borderColor: "red",
+          borderWidth: 1,
+          marginHorizontal: 12,
+          padding: 4,
+          // marginRight: 10,
         }}
       >
         <View style={{ flex: 1 }}>
           <TextInput
             style={{
-              backgroundColor: "white",
+              // backgroundColor: "white",
               padding: 7,
               paddingVertical: 9,
-              borderRadius: 10,
+              // borderRadius: 10,
               marginLeft: 9,
-              borderColor: "red",
-              borderWidth: 1,
+              // borderColor: "red",
+              // borderWidth: 1,
             }}
             value={query}
-            placeholder="Search Deals"
+            placeholder="Search Products"
             placeholderTextColor={"red"}
             onChangeText={(text) => {
               setquery(text);
@@ -333,13 +447,15 @@ function Search({ navigation }) {
                 setsearchdata([]);
               }
               if (text) {
-                getSearchdataaction(text)
-                  .then((data) => {
-                    setsearchdata(data);
-                  })
-                  .catch((e) => {
-                    console.log(e);
-                  });
+                GetExtractedData(text);
+                // setsearchdata(text)
+                // getSearchdataaction(text)
+                //   .then((data) => {
+                //     setsearchdata(data);
+                //   })
+                //   .catch((e) => {
+                //     console.log(e);
+                //   });
               }
             }}
           />
@@ -347,7 +463,8 @@ function Search({ navigation }) {
         <View
           style={{
             alignSelf: "center",
-            marginRight: 8,
+            // marginRight: 8,
+            marginRight: 6,
           }}
         >
           {query.length === 0 ? (
@@ -378,9 +495,12 @@ function Search({ navigation }) {
 
       <TouchableWithoutFeedback onPressIn={Keyboard.dismiss} accessible={true}>
         <FlatList
-          data={searchdata}
+          data={extractedData}
           renderItem={item}
           keyExtractor={(item, index) => index.toString()}
+          onEndReached={() => triggerNextPage && GetExtractedDataByPage(query)}
+          onEndReachedThreshold={4}
+          ListFooterComponent={triggerNextPage && listfootercomp}
         />
       </TouchableWithoutFeedback>
     </View>

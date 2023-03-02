@@ -14,6 +14,8 @@ import Signup from "../pages/signup";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { removeStorage } from "../actions/login";
+import SpecificProductPage from "../pages/SpecificProductPage";
+import UrlSpecificProductPage from "../pages/UrlSpecificProductPage";
 
 const Stack = createStackNavigator();
 
@@ -54,6 +56,14 @@ const HomeStackNavigator = () => {
       <Stack.Screen name="signin" component={Signin} />
       <Stack.Screen name="signup" component={Signup} />
       <Stack.Screen name="settings" component={Settings} />
+      <Stack.Screen
+        name="specificproductpage"
+        component={SpecificProductPage}
+      />
+      <Stack.Screen
+        name="urlspecificproductpage"
+        component={UrlSpecificProductPage}
+      />
     </Stack.Navigator>
   );
 };
@@ -111,6 +121,10 @@ const FlipkartStackNavigator = () => {
         component={Signup}
       />
       <Stack.Screen name="settings" component={Settings} />
+      <Stack.Screen
+        name="specificproductpage"
+        component={SpecificProductPage}
+      />
     </Stack.Navigator>
   );
 };
@@ -120,18 +134,41 @@ const AmazonStackNavigator = () => {
     <Stack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: "lightblue",
+          backgroundColor: "#e32f45",
         },
         headerTitle: (
           props // App Logo
         ) => (
           <View style={{ flexDirection: "row" }}>
             <Image
+              style={{ width: 30, height: 30 }}
+              source={require("../assets/icons/fk.png")}
+              resizeMode="contain"
+            />
+            <Text
+              style={{
+                marginTop: 5,
+                marginLeft: 5,
+                fontWeight: "bold",
+                color: "white",
+              }}
+            >
+              Flipkart
+            </Text>
+            <Text style={{ fontSize: 22 }}> /</Text>
+            <Image
               style={{ width: 30, height: 30, marginTop: 2 }}
               source={require("../assets/icons/amazon.png")}
               resizeMode="contain"
             />
-            <Text style={{ marginTop: 5, marginLeft: 5, fontWeight: "bold" }}>
+            <Text
+              style={{
+                marginTop: 5,
+                marginLeft: 5,
+                fontWeight: "bold",
+                color: "white",
+              }}
+            >
               Amazon
             </Text>
           </View>
@@ -160,6 +197,10 @@ const AmazonStackNavigator = () => {
         component={Signup}
       />
       <Stack.Screen name="settings" component={Settings} />
+      <Stack.Screen
+        name="specificproductpage"
+        component={SpecificProductPage}
+      />
     </Stack.Navigator>
   );
 };
@@ -220,6 +261,10 @@ const SearchStackNavigator = () => {
         component={Signup}
       />
       <Stack.Screen name="settings" component={Settings} />
+      <Stack.Screen
+        name="specificproductpage"
+        component={SpecificProductPage}
+      />
     </Stack.Navigator>
   );
 };
@@ -316,6 +361,10 @@ const SettingsStackNavigator = ({ navigation }) => {
         component={Signup}
       />
       <Stack.Screen name="home" component={Home} />
+      <Stack.Screen
+        name="specificproductpage"
+        component={SpecificProductPage}
+      />
     </Stack.Navigator>
   );
 };

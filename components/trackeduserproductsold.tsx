@@ -7,75 +7,36 @@ import {
   View,
   Image,
   Button,
-  TouchableNativeFeedback,
 } from "react-native";
 import { deletetrackedproductbyuser } from "../actions/trackproduct";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { getData } from "../actions/login";
 
 function Trackeduserproducts({ products, username, navigation }) {
   const [visible, setvisible] = useState(false);
-  // const prourlflipkart = products?.producturl.replace(/-/g, " ").slice(0, -7);
-  // const prourlamazon = products?.producturl.replace(/-/g, "+").slice(0, -7);
-  // if (products.platform === "Flipkart") {
-  //   var dynamicurl = `https://www.flipkart.com/search?q=${prourlflipkart}`;
-  // }
-  // if (products.platform === "Amazon") {
-  //   var dynamicurl = `https://www.amazon.in/s?k=${prourlamazon}&tag=jatin170f-21`;
-  // }
+  const prourlflipkart = products?.producturl.replace(/-/g, " ").slice(0, -7);
+  const prourlamazon = products?.producturl.replace(/-/g, "+").slice(0, -7);
+  if (products.platform === "Flipkart") {
+    var dynamicurl = `https://www.flipkart.com/search?q=${prourlflipkart}`;
+  }
+  if (products.platform === "Amazon") {
+    var dynamicurl = `https://www.amazon.in/s?k=${prourlamazon}&tag=jatin170f-21`;
+  }
 
   const deleteproduct = (username, productid) => {
-    fetch("http://3.110.124.205:8000/999", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: username,
-        product: `${products.product}`,
-      }),
-      // body: JSON.stringify({
-      //   url: `https://www.pricebefore.com/price-drops/?category=laptops&price-drop=${dealtime}&more=true`,
-      // }),
-    })
-      .then((response) => response.json())
+    deletetrackedproductbyuser(username, productid)
       .then((data) => {
-        if (!data) {
-          return null;
-        }
-        // console.log("4444444444444444444444444444");
-        // console.log(data);
-        // console.log("55555555555555555555");
+        console.log(data);
       })
       .catch((e) => {
         console.log(e);
       });
-
-    // deletetrackedproductbyuser(username, productid)
-    //   .then((data) => {
-    //     console.log(data);
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //   });
   };
 
   useEffect(() => {}, []);
   return (
     <View style={{ marginHorizontal: 10, marginVertical: 5 }}>
       <TouchableOpacity
-        // onPress={() => Linking.openURL(dynamicurl)}
-        onPress={() =>
-          // console.log(
-          //   products?.producturl +
-          //     "?tag=jatin170f-21&linkCode=ll1&ref_=as_li_ss_tl"
-          // )
-          Linking.openURL(
-            products?.producturl +
-              "?tag=jatin170f-21&linkCode=ll1&ref_=as_li_ss_tl"
-          )
-        }
+        onPress={() => Linking.openURL(dynamicurl)}
         style={{
           backgroundColor: "white",
           marginVertical: 2,
@@ -137,22 +98,15 @@ function Trackeduserproducts({ products, username, navigation }) {
               marginTop: 5,
             }}
           >
-            <View
-              style={{
-                marginBottom: 5,
-                flexDirection: "row",
-              }}
-            >
+            <View style={{ marginBottom: 5, flexDirection: "row" }}>
               <Text
                 style={{
                   textAlignVertical: "center",
                   borderWidth: 1,
-                  borderColor: "#17A5E1",
+                  borderColor: "blue",
                   borderRadius: 5,
                   paddingHorizontal: 5,
-                  color: "white",
-                  backgroundColor: "#17A5E1",
-                  fontWeight: "bold",
+                  color: "blue",
                 }}
               >
                 Tracking
@@ -173,11 +127,10 @@ function Trackeduserproducts({ products, username, navigation }) {
                   deleteproduct(username, products._id);
                   navigation.replace("settings");
                 }}
-                style={{ marginRight: -15 }}
               >
                 <View
                   style={{
-                    backgroundColor: "#e32f45",
+                    backgroundColor: "orange",
                     padding: 3,
                     borderRadius: 5,
                     marginLeft: 15,
@@ -188,21 +141,10 @@ function Trackeduserproducts({ products, username, navigation }) {
                     },
                     shadowOpacity: 0.25,
                     shadowRadius: 3.5,
-                    paddingHorizontal: 5,
-                    // elevation: 5,
+                    // elevation: 6,
                   }}
                 >
-                  <Icon name="delete-outline" size={24} color="white" />
-                  <Text
-                    style={{
-                      fontSize: 6,
-                      textAlign: "center",
-                      fontWeight: "bold",
-                      color: "white",
-                    }}
-                  >
-                    DELETE
-                  </Text>
+                  <Icon name="delete-outline" size={29} color="white" />
                 </View>
               </TouchableOpacity>
 
@@ -241,7 +183,7 @@ function Trackeduserproducts({ products, username, navigation }) {
                 </Text>
               </View>
               <View style={{ alignItems: "flex-end" }}>
-                <Text style={{ fontWeight: "700", fontSize: 12 }}>
+                <Text style={{ fontWeight: "900", fontSize: 16 }}>
                   {"  "}
                   {products.percent}% Off
                 </Text>

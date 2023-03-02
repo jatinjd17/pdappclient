@@ -11,7 +11,7 @@ import {
   View,
 } from "react-native";
 import { Trackproduct } from "../actions/trackproduct";
-import { useNavigation } from "@react-navigation/native";
+// import { useNavigation } from "@react-navigation/native";
 import Signin from "../pages/signin";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
 import Icon1 from "react-native-vector-icons/MaterialCommunityIcons";
@@ -73,7 +73,8 @@ function Mobilecard({ card, username, many, navigation }: any) {
     <TouchableOpacity
       style={{
         width: 220,
-        height: 377,
+        // height: 377,
+        height: 350,
         backgroundColor: "white",
         margin: 10,
         justifyContent: "center",
@@ -89,7 +90,26 @@ function Mobilecard({ card, username, many, navigation }: any) {
         shadowRadius: 3.5,
         elevation: 5,
       }}
-      onPress={() => Linking.openURL(dynamicurl)}
+      // onPress={() => Linking.openURL(dynamicurl)}
+      onPress={() =>
+        navigation.navigate("specificproductpage", {
+          product: card.producttitle,
+          price: card.finalprice,
+          highestprice: card.highestprice,
+          lowestprice: card.lowestprice,
+          percent: card.percent,
+          platform: card.platform,
+          discountprice: card.discountprice,
+          category: card.category,
+          imageurl: card.imageurl,
+          producturl: card.producturl,
+          features: card.features,
+          // viewalldealtime: dealtimeeee,
+          // category: category,
+          // dealtimecat: dealtimecat,
+          // originalviewalldealtime: viewalldealtimeee,
+        })
+      }
     >
       {/* <View
         style={
@@ -163,14 +183,14 @@ function Mobilecard({ card, username, many, navigation }: any) {
           {card.discountprice}
         </Text>
       </View>
-      <View style={{ flexDirection: "row" }}>
+      <View style={{ flexDirection: "row", marginTop: 10 }}>
         <View style={{}}>
           <Icon name="arrow-down-circle" size={29} color="green" />
         </View>
         <Text
           style={{
             textAlignVertical: "center",
-            paddingHorizontal: 7,
+            paddingHorizontal: 5,
             color: "green",
           }}
         >
@@ -181,7 +201,7 @@ function Mobilecard({ card, username, many, navigation }: any) {
         <Text
           style={{
             textAlignVertical: "center",
-            paddingHorizontal: 7,
+            paddingHorizontal: 5,
             color: "red",
           }}
         >
@@ -192,7 +212,7 @@ function Mobilecard({ card, username, many, navigation }: any) {
           <Icon name="arrow-up-circle" size={29} color="red" />
         </View>
       </View>
-      <View>
+      {/* <View>
         <TouchableOpacity
           style={
             trakpro.includes(card.producttitle) === true
@@ -222,7 +242,7 @@ function Mobilecard({ card, username, many, navigation }: any) {
               : `Add to Watchlist`}
           </Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
       {/* </View> */}
     </TouchableOpacity>
 

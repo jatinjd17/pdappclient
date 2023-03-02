@@ -1,28 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   Button,
   SafeAreaView,
   TextInput,
-  StyleSheet,
   View,
+  StyleSheet,
   Text,
   TouchableOpacity,
   KeyboardAvoidingView,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { SignUp } from "../../actions/login";
+import {
+  authenticate,
+  isAuth,
+  removeStorage,
+  SignIn,
+} from "../../actions/login";
 
-function Signup({ navigation }) {
+function Signin({ navigation }) {
   const [values, setValues] = useState({
     loading: false,
-    error: "",
     message: "",
+    error: "",
   });
-
-  useEffect(() => {
-    setValues({ ...values, loading: false, error: "", message: "" });
-  }, []);
 
   const {
     control,
@@ -31,74 +32,64 @@ function Signup({ navigation }) {
   } = useForm({ mode: "onBlur" });
 
   const onSubmit = (data) => {
-    setValues({ ...values, loading: true });
-    let formdata = new FormData();
     console.log(data);
-    formdata.append("name", data.name);
+    let formdata = new FormData();
+    setValues({ ...values, loading: true });
+
     formdata.append("email", data.email);
     formdata.append("password", data.password);
-    formdata.append("photo", data.photo);
-
-    fetch("http://3.110.124.205:8000/555", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-      // body: JSON.stringify({
-      //   url: `https://www.pricebefore.com/price-drops/?category=laptops&price-drop=${dealtime}&more=true`,
-      // }),
-    })
-      .then((response) =>
-        // console.log(response);
-        response.json()
-      )
+    console.log(data);
+    SignIn(data)
       .then((data) => {
-        if (!data) {
-          return null;
-        }
+        // console.log(data);
         if (data.error) {
-          console.log(data.error);
           setValues({ ...values, loading: false, error: data.error });
-          return null;
+          console.log(data.error);
+
+          return;
         }
         setValues({
           ...values,
           loading: false,
-          message: data.success,
+          message: "Sign In Successfully",
           error: "",
         });
-        console.log("8888888888888888888888888888888");
-        console.log(data);
-        console.log("999999999999999999999999999999");
-        // SetExtractedData(data);
+        authenticate(data, async () => {
+          const isaut = await isAuth();
+          if (isaut) {
+            console.log(isaut);
+            navigation.replace("settings");
+            ///////////////////////
+            // navigation.reset({
+            //   index: 0,
+            //   routes: [{ name: "nnn" }],
+            // });
+            //////////////////////////////////////////
+            // navigation.replace("nnn", {
+            //   params: { name: "ford" },
+            // });
+            // navigation.navigate("Home");
+            // console.log(JSON.parse(isAuth()));
+            // let isauth:any = isAuth();
+            // console.log(JSON.parse(isauth));
+            ////////////New//////////////
+            // Router.push(`/Blog/profile/${isAuth().name}`);
+            /////////////////////////////
+            // Router.push("/");
+
+            // const nnnn = await isAuth();
+            // console.log(nnnn);
+
+            // console.log(isAuth());
+
+            console.log("issss auttthhhh");
+          }
+        });
+        // console.log(data);
       })
       .catch((e) => {
-        // console.log(e);
         setValues({ ...values, loading: false, error: data.error });
       });
-
-    // SignUp(data)
-    //   .then((data) => {
-    //     console.log(data);
-    //     if (data.error) {
-    //       setValues({ ...values, loading: false, error: data.error });
-    //       console.log(data.error);
-
-    //       return;
-    //     }
-    //     console.log(data);
-    //     setValues({
-    //       ...values,
-    //       loading: false,
-    //       message: data.message,
-    //       error: "",
-    //     });
-    //   })
-    //   .catch((e) => {
-    //     setValues({ ...values, loading: false, error: data.error });
-    //   });
   };
 
   return (
@@ -106,49 +97,19 @@ function Signup({ navigation }) {
       style={{ flex: 1, flexDirection: "column", justifyContent: "center" }}
       behavior="position"
       // enabled
-      keyboardVerticalOffset={-150}
+      keyboardVerticalOffset={-120}
     >
       <ScrollView style={styles.cantainer}>
         <Text style={styles.headerTxt}>WELCOME</Text>
         <View style={styles.subView}>
-          <Text style={styles.subTxt}>Signup</Text>
-          <Controller
-            control={control}
-            name="username"
-            render={({ field: { onChange, value, onBlur } }) => (
-              <TextInput
-                style={styles.nameInput}
-                placeholder="Enter your username here"
-                value={value}
-                onBlur={onBlur}
-                onChangeText={(value) => onChange(value)}
-              />
-            )}
-            rules={{
-              required: {
-                value: true,
-                message: "Name is required!",
-              },
-              minLength: {
-                value: 4,
-                message: "Name should be atleast 4 Characters long",
-              },
-            }}
-          />
-          {errors?.username ? (
-            <Text style={{ marginLeft: 40, color: "red" }}>
-              {errors?.username && errors.username.message}
-            </Text>
-          ) : null}
-          {/* <TextInput style={styles.nameInput} placeholder="Username" /> */}
-          {/* /////////////////////////NEW????????????????????? */}
+          <Text style={styles.subTxt}>Login</Text>
           <Controller
             control={control}
             name="email"
             render={({ field: { onChange, value, onBlur } }) => (
               <TextInput
                 style={styles.nameInput}
-                placeholder="Enter your email here"
+                placeholder="Enter your Email here"
                 value={value}
                 onBlur={onBlur}
                 onChangeText={(value) => onChange(value)}
@@ -158,43 +119,37 @@ function Signup({ navigation }) {
               />
             )}
             rules={{
-              // pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
               pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                value:
+                  /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                // value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                 message: "invalid email address",
               },
-
               required: {
-                // validate: () => {},
-
                 value: true,
                 message: "Email is required!",
               },
             }}
           />
-          {errors?.email ? (
+          {errors?.email && (
             <Text style={{ marginLeft: 40, color: "red" }}>
-              {errors?.email && errors.email.message}
+              {errors.email && errors.email.message}
             </Text>
-          ) : null}
-
-          {/* /////////////////////////END????????????????????? */}
-
+          )}
           {/* <TextInput
           style={styles.nameInput}
           placeholder="Email"
           onChangeText={(email) => {
-            this.setState({ email });
+            // this.setState({ email });
           }}
         /> */}
-
           <Controller
             control={control}
             name="password"
             render={({ field: { onChange, value, onBlur } }) => (
               <TextInput
                 style={styles.nameInput}
-                placeholder="Enter your password here"
+                placeholder="Enter your Password here"
                 value={value}
                 onBlur={onBlur}
                 onChangeText={(value) => onChange(value)}
@@ -213,26 +168,33 @@ function Signup({ navigation }) {
               },
             }}
           />
-          {errors?.password ? (
+          {errors?.password && (
             <Text style={{ marginLeft: 40, color: "red" }}>
-              {errors?.password && errors.password.message}
+              {errors.password && errors.password.message}
             </Text>
-          ) : null}
+          )}
+
+          <TouchableOpacity
+            style={styles.btn}
+            // onPress={this.logIn}
+            onPress={handleSubmit(onSubmit)}
+          >
+            <Text style={styles.btnTxt}>Login</Text>
+          </TouchableOpacity>
+          {/* <Button title="Submit" onPress={handleSubmit(onSubmit)} /> */}
           {/* <TextInput
           style={styles.nameInput}
           placeholder="Password"
           onChangeText={(pass) => {
-            this.setState({ pass });
+            // this.setState({ pass });
           }}
         /> */}
-          <TouchableOpacity
-            style={styles.btn}
-            // onPress={this.signUp}
-            onPress={handleSubmit(onSubmit)}
-          >
-            <Text style={styles.btnTxt}>SignUp</Text>
-          </TouchableOpacity>
-
+          {/* <TouchableOpacity
+          style={styles.btn}
+          // onPress={this.logIn}
+        >
+          <Text style={styles.btnTxt}>Login</Text>
+        </TouchableOpacity> */}
           {values?.error ? (
             <Text
               style={{
@@ -250,65 +212,35 @@ function Signup({ navigation }) {
               {values.error}
             </Text>
           ) : null}
-          {values?.message ? (
-            <Text
-              style={{
-                textAlign: "center",
-                backgroundColor: "lightgreen",
-                color: "white",
-                padding: 5,
-                borderRadius: 10,
-                marginHorizontal: 10,
-                marginTop: 5,
-                marginBottom: -20,
-                fontWeight: "bold",
-              }}
-            >
-              {values.message}
-            </Text>
-          ) : null}
           <View style={styles.endView}>
-            <Text style={styles.endTxt}>Already have an account?</Text>
+            <Text style={styles.endTxt}>Create an account?</Text>
             <TouchableOpacity
               style={styles.endBtn}
-              onPress={() => {
-                navigation.replace("signin");
-              }}
-              // onPress={() =>
-              //   // this.props.navigation.navigate("login")
-              // }
+              onPress={
+                () => {
+                  // removeStorage("token", "user", "username");
+                  // setRefreshing(true);
+                  // console.log(username);
+                  // navigation.replace("signup");
+                  navigation.replace("signup");
+                }
+                // this.props.navigation.navigate("signup")
+              }
             >
-              <Text style={styles.loginTxt}>Login</Text>
+              <Text style={styles.loginTxt}>SignUp</Text>
             </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
-    // <SafeAreaView>
-    //   <Controller
-    //     control={control}
-    //     name="name"
-    //     render={({ field: { onChange, value, onBlur } }) => (
-    //       <TextInput
-    //         placeholder="Enter your name here"
-    //         value={value}
-    //         onBlur={onBlur}
-    //         onChangeText={(value) => onChange(value)}
-    //       />
-    //     )}
-    //     rules={{
-    //       required: {
-    //         value: true,
-    //         message: "Field is required!",
-    //       },
-    //     }}
-    //   />
+    // <SafeAreaView style={styles.cantainer}>
+    //   <Text style={styles.headerTxt}>WELCOME</Text>
     //   <Controller
     //     control={control}
     //     name="email"
     //     render={({ field: { onChange, value, onBlur } }) => (
     //       <TextInput
-    //         placeholder="Enter your email here"
+    //         placeholder="Enter your Email here"
     //         value={value}
     //         onBlur={onBlur}
     //         onChangeText={(value) => onChange(value)}
@@ -329,7 +261,7 @@ function Signup({ navigation }) {
     //     name="password"
     //     render={({ field: { onChange, value, onBlur } }) => (
     //       <TextInput
-    //         placeholder="Enter your password here"
+    //         placeholder="Enter your Password here"
     //         value={value}
     //         onBlur={onBlur}
     //         onChangeText={(value) => onChange(value)}
@@ -345,6 +277,23 @@ function Signup({ navigation }) {
     //     }}
     //   />
     //   <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+    //   {/* <View>
+    //     <Button
+    //       title="LogOut"
+    //       onPress={() => {
+    //         removeStorage("token", "user", "username");
+    //       }}
+    //     />
+    //   </View> */}
+    //   <Button
+    //     title="Register User?"
+    //     onPress={() => {
+    //       // removeStorage("token", "user", "username");
+    //       // setRefreshing(true);
+    //       // console.log(username);
+    //       navigation.navigate("signup");
+    //     }}
+    //   />
     // </SafeAreaView>
   );
 }
@@ -356,8 +305,8 @@ const styles = StyleSheet.create({
   },
   subView: {
     backgroundColor: "white",
-    height: 540,
-    marginTop: 160,
+    height: 470,
+    marginTop: 230,
     borderTopRightRadius: 40,
     borderTopLeftRadius: 40,
   },
@@ -367,7 +316,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
     position: "absolute",
-    marginTop: 40,
+    marginTop: 140,
   },
   subTxt: {
     color: "black",
@@ -405,8 +354,8 @@ const styles = StyleSheet.create({
   },
   endTxt: {
     fontSize: 15,
-    marginTop: 20,
-    marginLeft: 40,
+    marginTop: 30,
+    marginLeft: 60,
     fontWeight: "bold",
   },
   endBtn: {
@@ -415,8 +364,8 @@ const styles = StyleSheet.create({
   loginTxt: {
     fontSize: 20,
     fontWeight: "bold",
-    marginTop: 17,
+    marginTop: 24,
   },
 });
 
-export default Signup;
+export default Signin;

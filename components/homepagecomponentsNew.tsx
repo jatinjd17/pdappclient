@@ -6,20 +6,22 @@ import { isAuth } from "../actions/login";
 import { trackallproductsuser } from "../actions/trackproduct";
 import Mobilecard from "./mobilecard";
 
-function Homepagecomponents({ dealtime, navigation }) {
+function HomepagecomponentsNew({ dealtime, navigation }) {
   const [mobiles, setMobiles]: any = useState([]);
   const [pro, setpro] = useState([]);
   const [username, setusername] = useState("");
+  const [extractedData, SetExtractedData]: any = useState("");
   let many = [];
 
   useEffect(() => {
     isAuth().then((data) => {
       if (data) {
-        setusername(data.username);
-        blogs(data.username);
+        setusername(data.userr);
+        blogs(data.userr);
       }
     });
-    Mob();
+    // Mob();
+    GetExtractedData();
     // getDataUsingGet();
   }, []);
 
@@ -41,9 +43,9 @@ function Homepagecomponents({ dealtime, navigation }) {
     });
   };
 
-  const getAllMobilesHome = (mobiless: any) => {
-    if (mobiless != null) {
-      return mobiless.map((b: any, i: any) => {
+  const getAllMobilesHome = (extractedData: any) => {
+    if (extractedData != null) {
+      return extractedData.map((b: any, i: any) => {
         return (
           <View key={i}>
             <Mobilecard
@@ -79,6 +81,35 @@ function Homepagecomponents({ dealtime, navigation }) {
         return data.trackedproducts;
       }
     });
+  };
+
+  const GetExtractedData = () => {
+    fetch("http://3.110.124.205:8000/111", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        url: `https://www.pricebefore.com/price-drops/?price-drop=${dealtime}&more=true`,
+      }),
+      // body: JSON.stringify({
+      //   url: `https://www.pricebefore.com/price-drops/?category=laptops&price-drop=${dealtime}&more=true`,
+      // }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (!data) {
+          return null;
+        }
+        console.log("4444444444444444444444444444");
+        console.log(data);
+        console.log("55555555555555555555");
+        SetExtractedData(data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   // const getDataUsingGet = () => {
@@ -141,8 +172,8 @@ function Homepagecomponents({ dealtime, navigation }) {
         horizontal={true}
         showsHorizontalScrollIndicator={false}
       >
-        {mobiles != 0 ? (
-          getAllMobilesHome(mobiles.m)
+        {extractedData != 0 ? (
+          getAllMobilesHome(extractedData)
         ) : (
           <View>
             <ActivityIndicator
@@ -157,4 +188,4 @@ function Homepagecomponents({ dealtime, navigation }) {
   );
 }
 
-export default Homepagecomponents;
+export default HomepagecomponentsNew;
