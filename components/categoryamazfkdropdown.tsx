@@ -82,12 +82,12 @@ function Categoryamazfkdropdown({ navigation, platform, category, home }) {
           }
         } else {
           if (home) {
-            navigation.navigate("viewall", {
+            navigation.navigate("viewallamazfk", {
               platform: platform,
               category: item.value,
             });
           } else {
-            navigation.replace("viewall", {
+            navigation.replace("viewallamazfk", {
               platform: platform,
               category: item.value,
             });

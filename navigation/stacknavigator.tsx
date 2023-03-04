@@ -115,7 +115,7 @@ const AmazonStackNavigator = () => {
       }}
     >
       <Stack.Screen name="amaz" component={AmazonHome} />
-      <Stack.Screen name="viewall" component={ViewAllAmazFk} />
+      <Stack.Screen name="viewallamazfk" component={ViewAllAmazFk} />
       <Stack.Screen
         options={{
           headerStyle: {

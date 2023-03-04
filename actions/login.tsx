@@ -48,6 +48,17 @@ export const removeStorage = async (token, data) => {
   }
 };
 
+export const removeFCMTokenStorage = async (fcmtoken) => {
+  try {
+    await AsyncStorage.removeItem(fcmtoken);
+    // await AsyncStorage.removeItem(username);
+    // console.log("items removed");
+    return true;
+  } catch (exception) {
+    return false;
+  }
+};
+
 export const authenticate = async (data, next) => {
   // console.log(data);
   // setCookie("token", data.token);
@@ -73,5 +84,20 @@ export const isAuth = async () => {
     } else {
       return false;
     }
+  }
+};
+
+export const isFCMTokenAuth = async () => {
+  //   const isToken = getCookie("token");
+  const isToken = await getData("fcmtoken");
+  // const username = await getData("username");
+  // console.log(userr);
+  // console.log(isToken);
+  if (isToken) {
+    // console.log(isToken);
+    // return { userr, username };
+    return { isToken };
+  } else {
+    return false;
   }
 };

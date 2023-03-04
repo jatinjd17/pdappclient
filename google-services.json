@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "9892921594",
+    "project_id": "pricedropapp-d35ca",
+    "storage_bucket": "pricedropapp-d35ca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:9892921594:android:584179c361b0866e8c8943",
+        "android_client_info": {
+          "package_name": "com.j3interactive.pricedrop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "9892921594-4578dhm6r8s5b6ft9ks48vpj2rmb0iin.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.j3interactive.pricedrop",
+            "certificate_hash": "3ec95d2faaf6aba6ec34f8b6cdb7ffdc565d4dcb"
+          }
+        },
+        {
+          "client_id": "9892921594-scd0cubleg7sj43ni35t6ug5a7ij8dfq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.j3interactive.pricedrop",
+            "certificate_hash": "5a3dc3dc9cdbad24be743b50ead3ee020fce573f"
+          }
+        },
+        {
+          "client_id": "9892921594-8p3rad6r2konqt9td4bgdcanhr08vj26.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBK17vv_qdmhs96-YPdLsjj7H5xJKD52BM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "9892921594-8p3rad6r2konqt9td4bgdcanhr08vj26.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

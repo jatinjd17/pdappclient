@@ -1,14 +1,23 @@
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   RefreshControl,
   ScrollView,
   Text,
   View,
 } from "react-native";
+import messaging from "@react-native-firebase/messaging";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import HomepagecomponentsNew from "../../components/homepagecomponentsNew";
 import UrlSearchComponent from "../../components/UrlSearchComponent";
+import {
+  isAuth,
+  isFCMTokenAuth,
+  removeFCMTokenStorage,
+  removeStorage,
+  storeData,
+} from "../../actions/login";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -107,6 +116,148 @@ function Home({ navigation }) {
       )}
     </View>
   );
+
+  ////////////////////////////////////////////////NEW\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+  const requestUserPermission = async () => {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (enabled) {
+      console.log("Authorization status:", authStatus);
+    }
+  };
+
+  useEffect(() => {
+    isaut();
+  }, []);
+
+  const isaut = async () => {
+    let email = "";
+    const auttt2 = await isAuth();
+    if (!auttt2) {
+      email = "";
+    } else {
+      email = auttt2.userr;
+    }
+    const auttt = await isFCMTokenAuth();
+    if (!auttt) {
+      if (requestUserPermission()) {
+        messaging()
+          .getToken()
+          .then((token) => {
+            console.log(token);
+            console.log(email);
+
+            storeData("fcmtoken", token);
+            fetch("http://3.110.124.205:8000/100", {
+              method: "POST",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                email: email,
+                fcmtoken: token,
+              }),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                console.log(data);
+                // console.log("hhhhhhhhhh");
+              })
+              .catch((e) => {
+                console.log(e);
+              });
+          });
+      } else {
+        console.log("Failed token status");
+      }
+      // navigation.replace("signin");
+    } else {
+      console.log("already logged");
+    }
+  };
+
+  useEffect(() => {
+    // if (requestUserPermission()) {
+    //   messaging()
+    //     .getToken()
+    //     .then((token) => {
+    //       console.log(token);
+    //     });
+    // } else {
+    //   console.log("Failed token status", authStatus);
+    // }
+
+    messaging()
+      .getInitialNotification()
+      .then(async (remoteMessage) => {
+        if (remoteMessage) {
+          // console.log(
+          //   "Notification caused app to open from quit state:",
+          //   remoteMessage.notification
+          // );
+        }
+      });
+
+    messaging().onNotificationOpenedApp(async (remoteMessage) => {
+      // console.log(
+      //   "Notification caused app to open from background state:",
+      //   remoteMessage.notification
+      // );
+
+      // console.log(remoteMessage.data);
+
+      if (!remoteMessage.data.url) {
+        if (
+          remoteMessage.data.viewalldealtime &&
+          remoteMessage.data.viewallcategory
+        ) {
+          // console.log("time and category available");
+          // console.log(remoteMessage.data.viewalldealtime);
+          // console.log("time and category available");
+          navigation.navigate("viewall", {
+            category: remoteMessage.data.viewallcategory,
+            viewalldealtime: remoteMessage.data.viewalldealtime,
+            originalviewalldealtime: remoteMessage.data.viewalldealtime,
+          });
+        } else {
+          console.log("One of Both not available");
+        }
+        // if (remoteMessage.notification.android.clickAction) {
+        //   console.log("ClickAction Available");
+        //   // navigation.navigate("viewall", {
+        //   //   catetogry: ,
+        //   //   dealtime:
+        //   // });
+        // }
+        // console.log("No url link");
+      } else {
+        // console.log("Has url link");
+        navigation.navigate("urlspecificproductpage", {
+          producturl: remoteMessage.data.url,
+        });
+      }
+
+      // navigation.navigate(remoteMessage.data.type);
+    });
+
+    messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+      console.log("Message handled in the background!", remoteMessage);
+    });
+
+    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+      // Alert.alert("A new FCM message arrived!", JSON.stringify(remoteMessage));
+    });
+
+    return unsubscribe;
+  }, []);
+
+  ////////////////////////////////////END\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
   return (
     <View style={{ backgroundColor: "#FFF9F9" }}>
       <ScrollView
@@ -116,6 +267,10 @@ function Home({ navigation }) {
       >
         <View style={{ marginBottom: 95, marginTop: 5 }}>
           <UrlSearchComponent navigation={navigation} />
+          {/* <TouchableOpacity onPress={() => removeFCMTokenStorage("fcmtoken")}>
+            <Text>Logout</Text>
+          </TouchableOpacity> */}
+
           <DealsRowComponentBlock
             DealTitle={"Todays Deals"}
             dealtimeeee={"todaysDeals"}

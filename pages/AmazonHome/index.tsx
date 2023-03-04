@@ -67,7 +67,7 @@ function AmazonHome({ navigation }) {
           <TouchableOpacity>
             <Text
               onPress={() =>
-                navigation.navigate("viewall", {
+                navigation.navigate("viewallamazfk", {
                   platform: Platform,
                   category: CategoryName,
                 })

@@ -24,6 +24,7 @@ function MobilecomponentNew({ category, navigation }) {
   };
 
   const GetExtractedData = () => {
+    // console.log(category);
     fetch("http://3.110.124.205:8000/111", {
       method: "POST",
       headers: {
@@ -31,7 +32,8 @@ function MobilecomponentNew({ category, navigation }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        url: `https://www.pricebefore.com/price-drops/?category=${category}&more=true`,
+        // url: `https://www.pricebefore.com/price-drops/?category=${category}&more=true`,
+        url: `https://www.pricebefore.com/${category}/?page=1&more=true`,
       }),
     })
       .then((response) => response.json())

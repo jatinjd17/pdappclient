@@ -194,6 +194,12 @@ function ViewallDealcomponent({
     );
   };
   const GetExtractedData = () => {
+    // console.log("triggerrrrringggg");
+    // console.log(dealtime);
+    // // console.log(dealtimecat);
+    // console.log(category);
+    // console.log(originalviewalldealtime);
+
     fetch("http://3.110.124.205:8000/111", {
       method: "POST",
       headers: {
@@ -270,7 +276,7 @@ function ViewallDealcomponent({
           <Text
             style={{ textAlign: "center", marginTop: 100, fontWeight: "bold" }}
           >
-            No Products Available
+            No Products Available in {dealtime}
           </Text>
         </View>
       ) : extractedData == 0 ? (

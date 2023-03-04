@@ -19,6 +19,7 @@
       "supportsTablet": true
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "package": "com.j3interactive.pricedrop",
       "versionCode": 3,
       "permissions": [],
@@ -29,6 +30,11 @@
     },
     "web": {
       "favicon": "./assets/icons/pdappicon3.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e404e994-9675-46bd-bfea-5440ec8da281"
+      }
     }
   }
 }

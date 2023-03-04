@@ -199,17 +199,23 @@ export default function UrlSpecificProduct({ route, navigation }) {
           <View
             style={{ alignItems: "center", marginTop: 8, marginBottom: 100 }}
           >
-            <Image
-              style={{
-                height: 200,
-                width: 200,
-                resizeMode: "contain",
-                // alignItems: "center",
-              }}
-              source={{
-                uri: `${extractedData?.imageurl}`,
-              }}
-            />
+            {extractedData == 0 ? (
+              // <ActivityIndicator
+              <></>
+            ) : (
+              <Image
+                style={{
+                  height: 200,
+                  width: 200,
+                  resizeMode: "contain",
+                  // alignItems: "center",
+                }}
+                source={{
+                  uri: `${extractedData?.imageurl}`,
+                }}
+              />
+            )}
+
             <Text
               numberOfLines={3}
               ellipsizeMode="tail"
