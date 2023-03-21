@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
+  Platform,
   RefreshControl,
   ScrollView,
   Text,
   View,
 } from "react-native";
+import * as Notifications from "expo-notifications";
 import messaging from "@react-native-firebase/messaging";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import HomepagecomponentsNew from "../../components/homepagecomponentsNew";
@@ -120,13 +122,46 @@ function Home({ navigation }) {
   ////////////////////////////////////////////////NEW\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
   const requestUserPermission = async () => {
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    ////////////////////////IMP\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    // const authStatus = await messaging().requestPermission();
+    // const enabled =
+    //   authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+    //   authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-    if (enabled) {
-      console.log("Authorization status:", authStatus);
+    // if (enabled) {
+    //   console.log("Authorization status:", authStatus);
+    // }
+    /////////////////////////IMPEND\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    if (Platform.OS === "android") {
+      const { status: existingStatus } =
+        await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== "granted") {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== "granted") {
+        console.log("Failed to get push token for push notification!");
+        return false;
+      } else {
+        return true;
+      }
+
+      // const permission = await Notifications.requestPermissionsAsync();
+      // if (!permission.granted) {
+      //   return false;
+      // } else {
+      //   return true;
+      // }
+
+      ///////////////////////////////
+      // const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      // if (status !== "granted") {
+      //   console.log("Permission to receive notifications was denied");
+      //   return false;
+      // } else {
+      //   return true;
+      // }
     }
   };
 
@@ -176,6 +211,38 @@ function Home({ navigation }) {
         console.log("Failed token status");
       }
       // navigation.replace("signin");
+    } else if (email) {
+      if (requestUserPermission()) {
+        messaging()
+          .getToken()
+          .then((token) => {
+            console.log(token);
+            console.log(email);
+
+            storeData("fcmtoken", token);
+            fetch("http://3.110.124.205:8000/100", {
+              method: "POST",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                email: email,
+                fcmtoken: token,
+              }),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                console.log(data);
+                // console.log("hhhhhhhhhh");
+              })
+              .catch((e) => {
+                console.log(e);
+              });
+          });
+      } else {
+        console.log("Failed token status");
+      }
     } else {
       console.log("already logged");
     }
