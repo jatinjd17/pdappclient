@@ -328,6 +328,7 @@ function Home({ navigation }) {
   return (
     <View style={{ backgroundColor: "#FFF9F9" }}>
       <ScrollView
+        keyboardShouldPersistTaps="handled"
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }

@@ -14,6 +14,8 @@ import Icon from "react-native-vector-icons/SimpleLineIcons";
 import Icon1 from "react-native-vector-icons/MaterialCommunityIcons";
 import { getData } from "../actions/login";
 import LikeIcon from "react-native-vector-icons/AntDesign";
+import ImageNotFoundIcon from "react-native-vector-icons/MaterialIcons";
+import ImageModal from "react-native-image-modal";
 
 export default function UrlSpecificProduct({ route, navigation }) {
   const { producturl } = route.params;
@@ -23,6 +25,9 @@ export default function UrlSpecificProduct({ route, navigation }) {
   const [isLoading, SetisLoading]: any = useState(false);
   const [UserEmail, SetUserEmail]: any = useState(null);
   const [AddtoWatchlistButton, SetAddtoWatchlistButton]: any = useState(true);
+  const [ChartScrapeBase64, SetChartScrapeBase64]: any = useState(null);
+  const [ChartError, SetChartError]: any = useState(false);
+  const [OnlyOnce, SetOnlyOnce]: any = useState(false);
 
   useEffect(() => {
     GetExtractedData();
@@ -105,6 +110,44 @@ export default function UrlSpecificProduct({ route, navigation }) {
       .catch((e) => {
         console.log(e);
       });
+  };
+
+  const GetChartScrapeData = () => {
+    if (OnlyOnce == false) {
+      // console.log("Trigger");
+      const linkk = extractedData?.productlink;
+      fetch("http://65.2.40.236:5000/sss", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          url: `${linkk}`,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          // console.log(data);
+          SetOnlyOnce(true);
+          if (data.error) {
+            SetChartError(true);
+            return null;
+          }
+          // if (!data) {
+          //   return null;
+          // }
+          if (data.scrapdata) {
+            SetChartScrapeBase64(data.scrapdata);
+          }
+        })
+        .catch((e) => {
+          SetChartError(true);
+          // console.log("111111111111");
+          console.log(e);
+          // console.log("222222222222222");
+        });
+    }
   };
 
   const ProductLink = () => {
@@ -190,6 +233,76 @@ export default function UrlSpecificProduct({ route, navigation }) {
         });
     }
     return null;
+  };
+
+  const ChartComponent = () => {
+    GetChartScrapeData();
+    return (
+      <View style={{ height: 170 }}>
+        {ChartScrapeBase64 != null ? (
+          <ImageModal
+            // isTranslucent={false}
+            // imageBackgroundColor={"red"}
+            // renderToHardwareTextureAndroid={true}
+            resizeMode="contain"
+            overlayBackgroundColor={"#e32f45"}
+            // imageBackgroundColor="#000000"
+            style={{
+              // width: 350,
+              // height: 250,
+              width: 350,
+              height: 110,
+              // marginTop: -75,
+            }}
+            // modalImageStyle={{ height: 400, width: 200 }}
+            source={{
+              uri: `data:image/png;base64,${ChartScrapeBase64};`,
+            }}
+          />
+        ) : ChartError == true ? (
+          <View style={{ alignItems: "center" }}>
+            <View style={{ marginTop: 15 }}>
+              <ImageNotFoundIcon
+                name="image-not-supported"
+                size={30}
+                color="grey"
+              />
+            </View>
+
+            <Text
+              style={{
+                marginTop: 10,
+                fontWeight: "900",
+                fontSize: 10,
+                color: "grey",
+                paddingHorizontal: 50,
+              }}
+            >
+              Sorry Price History for this Product is not Available.
+            </Text>
+          </View>
+        ) : (
+          <View>
+            <ActivityIndicator
+              style={{ marginTop: 15 }}
+              color="red"
+              size={"large"}
+            />
+            <Text
+              style={{
+                marginTop: 5,
+                fontWeight: "700",
+                fontSize: 10,
+                color: "grey",
+                paddingHorizontal: 80,
+              }}
+            >
+              This may take some time. Please Wait!
+            </Text>
+          </View>
+        )}
+      </View>
+    );
   };
 
   return (
@@ -364,7 +477,34 @@ export default function UrlSpecificProduct({ route, navigation }) {
                 {ProductLink()}
               </View>
             )}
-            <View style={{ paddingHorizontal: 15, marginTop: 5 }}>
+            <View>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: 15,
+                  color: "#e32f45",
+                  marginLeft: 8,
+                }}
+              >
+                Price History Graph
+              </Text>
+              {extractedData != 0 && ChartComponent()}
+
+              <View>
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: 15,
+                    color: "#e32f45",
+                    marginLeft: 8,
+                    marginTop: -60,
+                  }}
+                >
+                  Specifications
+                </Text>
+              </View>
+            </View>
+            <View style={{ paddingHorizontal: 15, marginTop: -30 }}>
               {Featuress()}
             </View>
           </View>
