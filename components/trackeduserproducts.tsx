@@ -38,7 +38,7 @@ function Trackeduserproducts({ products, username, navigation }) {
           // )
           Linking.openURL(
             products?.producturl +
-              "?tag=jatin0c46-21&linkCode=ll1&ref_=as_li_ss_tl"
+              "?tag=jatin09bf-21&linkCode=ll1&ref_=as_li_ss_tl"
           )
         }
         style={{

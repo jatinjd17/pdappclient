@@ -157,7 +157,7 @@ export default function UrlSpecificProduct({ route, navigation }) {
       const link = linkk?.split("?");
       const FinalLink1 = link[0];
       const FinalLink =
-        FinalLink1 + "?tag=jatin0c46-21&linkCode=ll1&ref_=as_li_ss_tl";
+        FinalLink1 + "?tag=jatin09bf-21&linkCode=ll1&ref_=as_li_ss_tl";
       //   return link[0];
       return (
         <TouchableOpacity
