@@ -2,7 +2,7 @@
   "expo": {
     "name": "Price Drop",
     "slug": "PriceDrop",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "orientation": "portrait",
     "icon": "./assets/icons/pdappicon3.png",
     "userInterfaceStyle": "light",
@@ -21,7 +21,7 @@
     "android": {
       "googleServicesFile": "./google-services.json",
       "package": "com.j3interactive.pricedrop",
-      "versionCode": 7,
+      "versionCode": 8,
       "permissions": [],
       "adaptiveIcon": {
         "foregroundImage": "./assets/icons/pdappicon3.png",
