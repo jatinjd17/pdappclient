@@ -34,11 +34,11 @@ function Trackeduserproducts({ products, username, navigation }) {
         onPress={() =>
           // console.log(
           //   products?.producturl +
-          //     "?tag=jatin170f-21&linkCode=ll1&ref_=as_li_ss_tl"
+          //     "?tag=jatin170f-21&linkCode=ll2&ref_=as_li_ss_tl"
           // )
           Linking.openURL(
             products?.producturl +
-              "?tag=jatin09bf-21&linkCode=ll1&ref_=as_li_ss_tl"
+              "?tag=jatin09bf-21&linkCode=ll2&ref_=as_li_ss_tl"
           )
         }
         style={{

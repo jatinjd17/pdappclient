@@ -160,7 +160,7 @@ export default function SpecificProductPage({ route, navigation }) {
       const link = linkk.split("?");
       const FinalLink1 = link[0];
       const FinalLink =
-        FinalLink1 + "?tag=jatin09bf-21&linkCode=ll1&ref_=as_li_ss_tl";
+        FinalLink1 + "?tag=jatin09bf-21&linkCode=ll2&ref_=as_li_ss_tl";
 
       // SetFinalProductLink(FinalLink);
       //   return link[0];
