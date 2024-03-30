@@ -200,7 +200,7 @@ function ViewallDealcomponent({
     // console.log(category);
     // console.log(originalviewalldealtime);
 
-    fetch("http://3.110.124.205:8000/111", {
+    fetch("http://13.201.82.250:8000/111", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -227,7 +227,7 @@ function ViewallDealcomponent({
 
   const GetExtractedDataByPage = () => {
     SetPageNo(pageNo + 1);
-    fetch("http://3.110.124.205:8000/111", {
+    fetch("http://13.201.82.250:8000/111", {
       method: "POST",
       headers: {
         Accept: "application/json",

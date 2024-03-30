@@ -193,7 +193,7 @@ function Viewallamazfkcomponent({ category, navigation }) {
   };
 
   const GetExtractedData = () => {
-    fetch("http://3.110.124.205:8000/111", {
+    fetch("http://13.201.82.250:8000/111", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -220,7 +220,7 @@ function Viewallamazfkcomponent({ category, navigation }) {
   const GetExtractedDataByPage = () => {
     // console.log(pageNo);
     SetPageNo(pageNo + 1);
-    fetch("http://3.110.124.205:8000/111", {
+    fetch("http://13.201.82.250:8000/111", {
       method: "POST",
       headers: {
         Accept: "application/json",

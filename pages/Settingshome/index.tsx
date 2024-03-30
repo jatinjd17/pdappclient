@@ -46,7 +46,7 @@ function Settings({ navigation }) {
 
   const allBlogs = (username) => {
     setisLoading(true);
-    return fetch("http://3.110.124.205:8000/777", {
+    return fetch("http://13.201.82.250:8000/777", {
       method: "POST",
       headers: {
         Accept: "application/json",

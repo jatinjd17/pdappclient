@@ -44,7 +44,7 @@ export default function SpecificProductPage({ route, navigation }) {
   }, []);
 
   const GetExtractedData = () => {
-    fetch("http://3.110.124.205:8000/222", {
+    fetch("http://13.201.82.250:8000/222", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -93,7 +93,7 @@ export default function SpecificProductPage({ route, navigation }) {
       product: extractedData?.product,
       producturl: FinalLinkk,
     };
-    fetch("http://3.110.124.205:8000/666", {
+    fetch("http://13.201.82.250:8000/666", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -160,7 +160,7 @@ export default function SpecificProductPage({ route, navigation }) {
       const link = linkk.split("?");
       const FinalLink1 = link[0];
       const FinalLink =
-        FinalLink1 + "?tag=jatin09bf-21&linkCode=ll2&ref_=as_li_ss_tl";
+        FinalLink1 + "?tag=jatin004f-21&linkCode=ll1&ref_=as_li_ss_tl";
 
       // SetFinalProductLink(FinalLink);
       //   return link[0];
@@ -232,7 +232,7 @@ export default function SpecificProductPage({ route, navigation }) {
 
   const CheckIfProductWatchlist = () => {
     if (extractedData != 0 && UserEmail != null) {
-      fetch("http://3.110.124.205:8000/888", {
+      fetch("http://13.201.82.250:8000/888", {
         method: "POST",
         headers: {
           Accept: "application/json",

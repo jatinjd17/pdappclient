@@ -4,7 +4,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 function Trackeduserproducts({ products, username, navigation }) {
   const deleteproduct = (username) => {
-    fetch("http://3.110.124.205:8000/999", {
+    fetch("http://13.201.82.250:8000/999", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -34,11 +34,11 @@ function Trackeduserproducts({ products, username, navigation }) {
         onPress={() =>
           // console.log(
           //   products?.producturl +
-          //     "?tag=jatin170f-21&linkCode=ll2&ref_=as_li_ss_tl"
+          //     "?tag=jatin170f-21&linkCode=ll1&ref_=as_li_ss_tl"
           // )
           Linking.openURL(
             products?.producturl +
-              "?tag=jatin09bf-21&linkCode=ll2&ref_=as_li_ss_tl"
+              "?tag=jatin004f-21&linkCode=ll1&ref_=as_li_ss_tl"
           )
         }
         style={{

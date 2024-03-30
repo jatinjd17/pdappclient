@@ -29,7 +29,7 @@ function Signup({ navigation }) {
 
   const onSubmit = (data) => {
     setValues({ ...values, loading: true });
-    fetch("http://3.110.124.205:8000/555", {
+    fetch("http://13.201.82.250:8000/555", {
       method: "POST",
       headers: {
         Accept: "application/json",

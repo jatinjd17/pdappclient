@@ -154,7 +154,7 @@ function Search({ navigation }) {
   };
 
   const GetExtractedData = (text) => {
-    fetch("http://3.110.124.205:8000/333", {
+    fetch("http://13.201.82.250:8000/333", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -185,7 +185,7 @@ function Search({ navigation }) {
   const GetExtractedDataByPage = (text) => {
     // console.log(pageNo);
     SetPageNo(pageNo + 1);
-    fetch("http://3.110.124.205:8000/333", {
+    fetch("http://13.201.82.250:8000/333", {
       method: "POST",
       headers: {
         Accept: "application/json",
