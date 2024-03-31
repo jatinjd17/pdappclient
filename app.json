@@ -2,7 +2,7 @@
   "expo": {
     "name": "Price Drop",
     "slug": "PriceDrop",
-    "version": "1.0.9",
+    "version": "1.0.10",
     "orientation": "portrait",
     "icon": "./assets/icons/pdappicon3.png",
     "userInterfaceStyle": "light",
@@ -21,7 +21,7 @@
     "android": {
       "googleServicesFile": "./google-services.json",
       "package": "com.j3interactive.pricedrop",
-      "versionCode": 10,
+      "versionCode": 11,
       "permissions": [],
       "adaptiveIcon": {
         "foregroundImage": "./assets/icons/pdappicon3.png",
@@ -35,6 +35,9 @@
       "eas": {
         "projectId": "e404e994-9675-46bd-bfea-5440ec8da281"
       }
-    }
+    },
+    "plugins": [
+      ["expo-build-properties", { "android": { "usesCleartextTraffic": true } }]
+    ]
   }
 }
